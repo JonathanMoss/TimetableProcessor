@@ -1,0 +1,13 @@
+version: "3"
+services:
+  cif_download:
+    container_name: cif-download
+    build:
+      context: "."
+      dockerfile: ./docker/cif_download/Dockerfile
+    environment:
+      CIF_FOLDER: /root/CIF
+      NROD_USER: ${NROD_USER}
+      NROD_PASS: ${NROD_PASS}
+    volumes:
+    - "/home/tms_user/CIF:/root/CIF"
