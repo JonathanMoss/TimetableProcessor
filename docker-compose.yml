@@ -6,8 +6,8 @@ services:
       context: "."
       dockerfile: ./docker/cif_download/Dockerfile
     environment:
-      CIF_FOLDER: /root/CIF
+      CIF_FOLDER: /root/CIF/
       NROD_USER: ${NROD_USER}
       NROD_PASS: ${NROD_PASS}
     volumes:
-    - "/home/tms_user/CIF:/root/CIF"
+    - "/home/tms_user/CIF:/root/CIF/"
