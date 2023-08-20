@@ -20,7 +20,8 @@ function touch_time {
   day="${DT:4:2}"
   month="${DT:2:2}"
   year="${DT:0:2}"
-  echo $day$month$year
+  
+  echo "20${year}${month}${day}0000.00"
 }
 
 # Download the latest FULL CIF & un-gzip
@@ -41,7 +42,7 @@ echo "File reference: $REF"
 
 # Get the file date
 FULL_DATE=$(get_date $FILE)
-# echo "File date: $FULL_DATE"
+echo "File date: $FULL_DATE"
 
 TOUCH=$(touch_time $FULL_DATE)
 echo "Full CIF File date: $TOUCH"
@@ -70,20 +71,20 @@ for DAY in ${DAYS[@]}; do
   echo "File reference: $REF"
 
   # Get the file date
-  DATE=$(get_date $INC_FILE)
-  echo "File date: $(touch_time $DATE)"
+  INC_DATE=$(get_date $INC_FILE)
+  echo "File date: $INC_DATE"
 
   # Compare dates
-  FULL_CIF_DATE=$(date -d $TOUCH +"%Y%m%d")
-  UPDATE=$(date -d $(touch_time $DATE) +"%Y%m%d")
+  FULL_CIF_DATE=$(date -d $FULL_DATE +"%Y%m%d")
+  UPDATE_DATE=$(date -d $INC_DATE +"%Y%m%d")
 
-  if [ $FULL_CIF_DATE -ge $UPDATE ];
+  if [ $FULL_CIF_DATE -ge $UPDATE_DATE ];
   then
     echo "Deleting $INC_FILE, date expired"
     rm $INC_FILE
   else
     mv $INC_FILE "$REF.CIF"
-    touch "$REF.CIF" -t $(touch_time $DATE)
+    touch "$REF.CIF" -t $(touch_time $INC_DATE)
     echo "Saved $REF.CIF to $(pwd)"
   fi
 
