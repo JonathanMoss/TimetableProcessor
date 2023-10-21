@@ -13,7 +13,6 @@ RUN apk add lz4
 ADD ./docker/cif_download/entrypoint.sh root/app/
 ADD ./app/cif_download/fetch.sh root/app/
 ADD ./app/cif_download/strip_schedules.sh root/app/
-ADD ./app/cif_download/convert_cif_to_csv.sh root/app/
 
 RUN ls root/app/
 
