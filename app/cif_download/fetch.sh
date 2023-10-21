@@ -2,8 +2,6 @@
 
 set -u
 
-cd $CIF_FOLDER
-rm -rf *.CIF *.CIF.gz
 URL='https://publicdatafeeds.networkrail.co.uk/ntrod/CifFileAuthenticate'
 
 function get_ref {
@@ -14,15 +12,31 @@ function get_date {
   echo $(head -n 1 $1 | awk '{print $1}' | grep -Eo 'PD[0-9]{6}' | sed 's/PD//')
 }
 
-function touch_time {
+function touch_time () {
   
-  DT=$1
-  day="${DT:4:2}"
-  month="${DT:2:2}"
-  year="${DT:0:2}"
+  day="${1:4:2}"
+  month="${1:2:2}"
+  year="${1:0:2}"
   
   echo "20${year}${month}${day}0000.00"
 }
+
+function archive_file_name {
+
+  DATE=$(date -r $CIF_FOLDER/AMALGAMATED.CIF +"%d%m%Y")
+  echo "$ARCHIVE_CIF/${DATE}.CIF.lz4"
+
+}
+
+cd $CIF_FOLDER
+
+# Archive the amalgamated CIF.
+echo "Archiving AMALGAMATED.CIF"
+lz4 -9 -v -f AMALGAMATED.CIF $(archive_file_name)
+
+# Clearout the CIF & Archive folders of stuff we dont want
+rm -rf *.CIF *.CIF.gz *.gz *.csv
+rm -rf $ARCHIVE_CIF/*.CIF
 
 # Download the latest FULL CIF & un-gzip
 FILE="CIF_ALL_FULL_DAILY.CIF"
@@ -75,8 +89,10 @@ for DAY in ${DAYS[@]}; do
   echo "File date: $INC_DATE"
 
   # Compare dates
-  FULL_CIF_DATE=$(date -d $FULL_DATE +"%Y%m%d")
-  UPDATE_DATE=$(date -d $INC_DATE +"%Y%m%d")
+  FULL_CIF_DATE=$(date -d "${FULL_DATE}" +"%y%m%d")
+  UPDATE_DATE=$(date -d "${INC_DATE}" +"%y%m%d")
+  echo "UPDATE_DATE: $INC_DATE"
+  echo "FULL_CIF_DATE: $FULL_DATE" 
 
   if [ $FULL_CIF_DATE -ge $UPDATE_DATE ];
   then
