@@ -3,6 +3,7 @@
 set -u
 
 URL='https://publicdatafeeds.networkrail.co.uk/ntrod/CifFileAuthenticate'
+AMALG="$CIF_FOLDER/AMALGAMATED.CIF"
 
 function get_ref {
   echo $(head -n 1 $1 | awk '{print $1}' | cut -d. -f3)
@@ -23,7 +24,7 @@ function touch_time () {
 
 function archive_file_name {
 
-  DATE=$(date -r $CIF_FOLDER/AMALGAMATED.CIF +"%d%m%Y")
+  DATE=$(date -r $AMALG +"%d%m%Y")
   echo "$ARCHIVE_CIF/${DATE}.CIF.lz4"
 
 }
@@ -31,8 +32,13 @@ function archive_file_name {
 cd $CIF_FOLDER
 
 # Archive the amalgamated CIF.
-echo "Archiving AMALGAMATED.CIF"
-lz4 -9 -v -f AMALGAMATED.CIF $(archive_file_name)
+if [ -f "$AMALG" ]
+then
+  echo "Archiving $AMALG"
+  lz4 -9 -v -f $AMALG $(archive_file_name)
+else
+  echo "$AMALG not found"
+fi
 
 # Clearout the CIF & Archive folders of stuff we dont want
 rm -rf *.CIF *.CIF.gz *.gz *.csv
