@@ -11,8 +11,19 @@ services:
       NROD_USER: ${NROD_USER}
       NROD_PASS: ${NROD_PASS}
     volumes:
-    - "/home/tms_user/CIF:/root/CIF/"
-    - "/home/tms_user/ARCHIVE_CIF:/root/ARCHIVE_CIF/"
+      - "/home/tms_user/CIF:/root/CIF/"
+      - "/home/tms_user/ARCHIVE_CIF:/root/ARCHIVE_CIF/"
+  cif_processing:
+    container_name: cif-processing
+    build:
+      context: "."
+      dockerfile: ./docker/cif_processing/Dockerfile
+    environment:
+      CIF_FOLDER: /root/CIF/
+      PROC_DIR: /root/PROC_DIR
+    volumes:
+      - "/home/tms_user/CIF:/root/CIF/"
+      - "/home/tms_user/PROC_DIR:/root/PROC_DIR/"
   postgres:
     container_name: postgres
     image: postgres

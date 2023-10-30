@@ -1,6 +1,10 @@
+#!/bin/bash
+
+set -u
+
 function bs () {
 
-    out='BS',       # Record Type
+    out=${2},       # schedule ID
     out+=${1:2:1},  # Transaction Type
     out+=${1:3:6},  # UID
     out+=${1:9:6},  # Schedule Start Date
@@ -28,7 +32,7 @@ function bs () {
 
 function bx () {
 
-    out='BX',        # Record Type
+    out=${2},        # Basic Schedule ID
     out+=${1:11:2},  # ATOC Code
     out+=${1:13:1},  # Applicable Timetable
     out+=${1:14:8}   # Retain Service ID
@@ -38,7 +42,7 @@ function bx () {
 
 function lo () {
 
-    out='LO',        # Record Type
+    out=${2},        # Basic Schedule ID
     out+=${1:2:7},   # TIPLOC
     out+=${1:9:1},   # Suffix
     out+=${1:10:5},  # WTT Dep.
@@ -56,7 +60,7 @@ function lo () {
 
 function li () {
 
-    out='LI',        # Record Type
+    out=${2},        # Basic Schedule ID
     out+=${1:2:7},   # TIPLOC
     out+=${1:9:1},   # Suffix
     out+=${1:10:5},  # WTT Arr.
@@ -78,7 +82,7 @@ function li () {
 
 function lt () {
 
-    out='LT',        # Record Type
+    out=${2},        # Basic Schedule ID
     out+=${1:2:7},   # TIPLOC
     out+=${1:9:1},   # Suffix
     out+=${1:10:5},  # WTT Arr.
@@ -92,46 +96,54 @@ function lt () {
 
 }
 
-cd $CIF_FOLDER
-# rm -f *.csv
-# touch CIF.csv
+function cr () {
+    out=${2},        # Basic Schedule ID
+    echo $out
+}
+
+cd $PROC_DIR
+rm -f *.csv
+touch bs.csv bx.csv lo.csv li.csv cr.csv lt.csv
+
+index=-1
+while IFS="" read -r line || [ -n "$line" ]
+do
+    case ${line:0:2} in
+
+        'BS')
+            let "index+=1"
+            echo $(bs "$line" $index) >> bs.csv
+        ;;
+
+        'BX')
+            echo $(bx "$line" $index) >> bx.csv
+        ;;
+
+        'LO')
+            echo $(lo "$line" $index) >> lo.csv
+        ;;
+
+        'LI')
+            echo $(li "$line" $index) >> li.csv
+        ;;
+
+        'LT')
+            echo $(lt "$line" $index) >> lt.csv
+        ;;
+
+        'CR')
+            echo $(cr "$line" $index) >> cr.csv
+
+    esac
+
+done < $CIF_FOLDER/AMALGAMATED.CIF
 
 # while IFS="" read -r line || [ -n "$line" ]
 # do
-#     case ${line:0:2} in
 
-#         'BS')
-#             echo $(bs "$line") >> CIF.csv
-#         ;;
-
-#         'BX')
-#             echo $(bx "$line") >> CIF.csv
-#         ;;
-
-#         'LO')
-#             echo $(lo "$line") >> CIF.csv
-#         ;;
-
-#         'LI')
-#             echo $(li "$line") >> CIF.csv
-#         ;;
-
-#         'LT')
-#             echo $(lt "$line") >> CIF.csv
-#         ;;
-
-#     esac
-
-# done < AMALGAMATED.CIF
-
-# while IFS="" read -r line || [ -n "$line" ]
-# do
-
-#     echo "*****"
 #     echo $line
-#     echo "*****"
 
 # done < <(pcregrep -Mh "^BS\X*?(?=^BS|^ZZ)" *.CIF)
 
-gawk '/^BS\X/,/^BS|^ZZ/' *.CIF
+# gawk '/^BS\X/,/^BS|^ZZ/' *.CIF
 
