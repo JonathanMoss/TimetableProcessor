@@ -1,11 +1,22 @@
-cd "${HOME}"/CIF/
-# # BS=$(pcregrep -Mh "^BS\X*?(?=^BS|^ZZ)" *.CIF)
+#!/bin/bash
 
-# while read -u n; do
-#     echo "$n"
-#     echo 
-# done < <(pcregrep -Mh "^BS\X*?(?=^BS|^ZZ)" *.CIF)
+set -u
 
-# pcregrep -Mh "^BS\X*?(?=^BS|^ZZ)" *.CIF | awk '{print $0}; END {print "--------"}'
+function get_index {
+    # This will be a curl command to fetch the next index from the db API
+    echo 1
+}
 
-pcregrep -Mh "^BS\X*?(?=^BS|^ZZ)" *.CIF | mapfile
+rm *.csv
+touch bs.csv bx.csv lo.csv li.csv lt.csv cr.csv
+
+for i in $CIF_FOLDER/*.CIF; do
+    [ -f "$i" ] || break
+    gawk -f cif_convert.awk ind=$(get_index) $i
+done
+
+# Remove empty lines
+for i in *.csv; do
+    [ -f "$i" ] || break
+    sed -i '/^$/d' $i
+done
