@@ -1,5 +1,6 @@
 function bs (line, id) {
     # Formats a Basic Schedule Record into CSV format
+
     return id "," \
     substr(line, 3, 1) "," \
     substr(line, 4, 6) "," \
@@ -27,6 +28,7 @@ function bs (line, id) {
 
 function bx (line, id) {
     # Formats a Schedule Extra Record into CSV format
+
     return id "," \
     substr(line, 7, 5) "," \
     substr(line, 12, 2) "," \
@@ -35,6 +37,7 @@ function bx (line, id) {
 
 function lo (line, id) {
     # Formats an Origin Location Record into CSV format
+
     return id "," \
     substr(line, 3, 7) "," \
     substr(line, 10, 1) "," \
@@ -50,6 +53,7 @@ function lo (line, id) {
 
 function li (line, id) {
     # Formats an Intermediate Location Record into CSV format
+
     return id "," \
     substr(line, 3, 7) "," \
     substr(line, 10, 1) "," \
@@ -69,6 +73,7 @@ function li (line, id) {
 
 function lt (line, id) {
     # Formats a Terminating Location Record into CSV format
+
     return id "," \
     substr(line, 3, 7) "," \
     substr(line, 10, 1) "," \
@@ -81,6 +86,7 @@ function lt (line, id) {
 
 function cr (line, id) {
     # Formats a Change Record into CSV format
+
     return id "," \
     substr(line, 3, 7) "," \
     substr(line, 10, 1) "," \
@@ -104,6 +110,7 @@ function cr (line, id) {
 
 function write_files () {
 # Updates the CSV records to the respective files
+
     NUM_PROC=0
     print BS >> "bs.csv"
     BS=""
