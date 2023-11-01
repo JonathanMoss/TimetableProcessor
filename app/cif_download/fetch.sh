@@ -29,6 +29,29 @@ function archive_file_name {
 
 }
 
+function header_info () {
+
+  header=$(head -n 1 $1)
+  
+  TMP=$(echo "HD,${header:2:20},"\
+  "${header:22:6},"\
+  "${header:28:4},"\
+  "${header:32:7},"\
+  "${header:39:7},"\
+  "${header:46:1},"\
+  "${header:47:1},"\
+  "${header:48:6},"\
+  "${header:54:6},"\
+  "$2,"\
+  "$3,"\
+  "$4,"\
+  "$5")
+
+  TRIMMED=$(tr -d '[:blank:]' <<< $TMP)
+  echo "$TRIMMED,$(date '+%F %H:%M:%S')\n"
+  
+}
+
 cd $CIF_FOLDER
 
 # Archive the amalgamated CIF.
@@ -44,13 +67,20 @@ fi
 rm -rf *.CIF *.CIF.gz *.gz *.csv
 rm -rf $ARCHIVE_CIF/*.CIF
 
+# Create the header file CSV
+touch "$CIF_FOLDER/header_inf.csv"
+
 # Download the latest FULL CIF & un-gzip
 FILE="CIF_ALL_FULL_DAILY.CIF"
 echo "Downloading $FILE"
 curl -L -u $NROD_USER:$NROD_PASS -o $FILE.gz "$URL?type=CIF_ALL_FULL_DAILY&day=toc-full.CIF.gz"
 
 if gzip -t $FILE.gz; then
+  FULL_CIF_ARCHIVE_SIZE=$(stat --printf="%s" $FILE.gz)
+  echo "Archive size: $FULL_CIF_ARCHIVE_SIZE"
   gzip -d $FILE.gz
+  FULL_CIF_SIZE=$(stat --printf="%s" $FILE)
+  echo "Uncompressed size: $FULL_CIF_SIZE"
 else
   rm $FILE.gz
   exit 1
@@ -68,9 +98,11 @@ TOUCH=$(touch_time $FULL_DATE)
 echo "Full CIF File date: $TOUCH"
 
 # Rename the full CIF and adjust the file date
-mv $FILE "$REF.CIF"
+cp $FILE "$REF.CIF"
 touch "$REF.CIF" -t $TOUCH
 echo "Saved $REF.CIF to $(pwd)"
+echo $(header_info $FILE $FULL_CIF_ARCHIVE_SIZE $FULL_CIF_SIZE $FILE.gz $REF.CIF) >> "$CIF_FOLDER/header_inf.csv"
+rm $FILE
 
 echo "Looking for incremental CIF"
 DAYS=("sat" "sun" "mon" "tue" "wed" "thu")
@@ -79,7 +111,11 @@ for DAY in ${DAYS[@]}; do
   curl -L -u $NROD_USER:$NROD_PASS -o $INC_FILE.gz "$URL?type=CIF_ALL_UPDATE_DAILY&day=$INC_FILE.CIF.gz"
   
   if gzip -t $INC_FILE.gz; then
+    UPDATE_CIF_ARCHIVE_SIZE=$(stat --printf="%s" $INC_FILE.gz)
+    echo "Archive size: $UPDATE_CIF_ARCHIVE_SIZE"
     gzip -d $INC_FILE.gz
+    UPDATE_CIF_SIZE=$(stat --printf="%s" $INC_FILE)
+    echo "Uncompressed size: $UPDATE_CIF_SIZE"
   else
     rm $INC_FILE.gz
     continue
@@ -105,9 +141,11 @@ for DAY in ${DAYS[@]}; do
     echo "Deleting $INC_FILE, date expired"
     rm $INC_FILE
   else
-    mv $INC_FILE "$REF.CIF"
+    cp $INC_FILE "$REF.CIF"
     touch "$REF.CIF" -t $(touch_time $INC_DATE)
     echo "Saved $REF.CIF to $(pwd)"
+    echo $(header_info $INC_FILE $UPDATE_CIF_ARCHIVE_SIZE $UPDATE_CIF_SIZE $INC_FILE.gz "$REF.CIF") >> "$CIF_FOLDER/header_inf.csv"
+    rm $INC_FILE
   fi
 
 done

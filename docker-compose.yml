@@ -31,6 +31,10 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: TSDB
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - "/db-data:/var/lib/postgresql/data"
+
   adminer:
     container_name: adminer
     image: adminer
