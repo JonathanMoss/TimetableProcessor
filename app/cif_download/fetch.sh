@@ -33,7 +33,7 @@ function header_info () {
 
   header=$(head -n 1 $1)
   
-  TMP=$(echo "HD,${header:2:20},"\
+  TMP=$(echo "${header:2:20},"\
   "${header:22:6},"\
   "${header:28:4},"\
   "${header:32:7},"\
@@ -48,7 +48,7 @@ function header_info () {
   "$5")
 
   TRIMMED=$(tr -d '[:blank:]' <<< $TMP)
-  echo "$TRIMMED,$(date '+%F %H:%M:%S')\n"
+  echo "$TRIMMED,$(date '+%F %H:%M:%S')"
   
 }
 
