@@ -1,11 +1,11 @@
 """ Representation of a CIF header record"""
 
-# pylint: disable=R0903
+# pylint: disable=R0903, E0401, C0413
 
-from sqlalchemy.orm import declarative_base
+import sys
 from sqlalchemy import Column, String, Date, Time, DateTime, BigInteger, Integer
-
-Base = declarative_base()
+sys.path.insert(0, './app') # nopep8
+from db.config import Base
 
 class HeaderRecord(Base):
     """Representation of a CIF header record"""
