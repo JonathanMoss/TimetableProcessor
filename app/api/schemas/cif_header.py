@@ -27,12 +27,12 @@ class Header(pydantic.BaseModel):
         title='Time of Extract'
     )
 
-    current_file_reference: str = pydantic.Field(
+    current_file_ref: str = pydantic.Field(
         title='Current File Reference',
         pattern="^[A-Z0-9]{6}[A-Z]{1}$"
     )
 
-    last_file_reference: Union[str, None] = pydantic.Field(
+    last_file_ref: Union[str, None] = pydantic.Field(
         title='Last File Reference',
         default=None
     )
@@ -102,7 +102,7 @@ class Header(pydantic.BaseModel):
             )
         return match[0]
 
-    @pydantic.field_validator('last_file_reference')
+    @pydantic.field_validator('last_file_ref')
     @classmethod
     def validate_last_file_reference(cls, value: Union[str, None]) -> Union[str, None]:
         """Format the Last File Reference"""
@@ -148,8 +148,8 @@ class Header(pydantic.BaseModel):
             'mainframe_identity': values[0],
             'extract_date': values[1],
             'extract_time': values[2],
-            'current_file_reference': values[3],
-            'last_file_reference': values[4],
+            'current_file_ref': values[3],
+            'last_file_ref': values[4],
             'update_indicator': values[5],
             'version': values[6],
             'user_start_date': values[7],
