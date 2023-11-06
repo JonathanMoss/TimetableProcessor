@@ -9,6 +9,10 @@ import pydantic
 
 DATETIME = '[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}'
 
+class RequestBodyModel(pydantic.BaseModel):
+    """Representation of a CURL request body"""
+    csv_line: str
+
 class Header(pydantic.BaseModel):
     """Representation of a CIF header record"""
 
@@ -144,6 +148,8 @@ class Header(pydantic.BaseModel):
         """Create a Header Object from a list of csv values/csv string"""
         if isinstance(values, str):
             values = values.split(',')
+        if len(values) < 14:
+            raise ValueError
         params = {
             'mainframe_identity': values[0],
             'extract_date': values[1],

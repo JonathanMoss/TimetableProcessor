@@ -3,7 +3,7 @@
 # pylint: disable=R0903, E0401, C0413
 
 import sys
-from sqlalchemy import Column, String, Date, Time, DateTime, BigInteger, Integer
+from sqlalchemy import Column, String, BigInteger, Integer
 sys.path.insert(0, './app') # nopep8
 from db.config import Base
 

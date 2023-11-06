@@ -5,6 +5,17 @@ set -u
 URL='https://publicdatafeeds.networkrail.co.uk/ntrod/CifFileAuthenticate'
 AMALG="$CIF_FOLDER/AMALGAMATED.CIF"
 
+function update_db () {
+  
+  echo $(
+    curl -X 'POST' \
+    "http://api:8000/api/v1/header/insert/" \
+    -H 'accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d '{"csv_line": "'"$1"'" }'
+  )
+}
+
 function get_ref {
   echo $(head -n 1 $1 | awk '{print $1}' | cut -d. -f3)
 }
@@ -101,7 +112,9 @@ echo "Full CIF File date: $TOUCH"
 cp $FILE "$REF.CIF"
 touch "$REF.CIF" -t $TOUCH
 echo "Saved $REF.CIF to $(pwd)"
-echo $(header_info $FILE $FULL_CIF_ARCHIVE_SIZE $FULL_CIF_SIZE $FILE.gz $REF.CIF) >> "$CIF_FOLDER/header_inf.csv"
+full_cif_line=$(header_info $FILE $FULL_CIF_ARCHIVE_SIZE $FULL_CIF_SIZE $FILE.gz $REF.CIF)
+echo $full_cif_line >> "$CIF_FOLDER/header_inf.csv"
+echo $(update_db "$full_cif_line")
 rm $FILE
 
 echo "Looking for incremental CIF"
@@ -144,7 +157,9 @@ for DAY in ${DAYS[@]}; do
     cp $INC_FILE "$REF.CIF"
     touch "$REF.CIF" -t $(touch_time $INC_DATE)
     echo "Saved $REF.CIF to $(pwd)"
-    echo $(header_info $INC_FILE $UPDATE_CIF_ARCHIVE_SIZE $UPDATE_CIF_SIZE $INC_FILE.gz "$REF.CIF") >> "$CIF_FOLDER/header_inf.csv"
+    inc_cif_line=$(header_info $INC_FILE $UPDATE_CIF_ARCHIVE_SIZE $UPDATE_CIF_SIZE $INC_FILE.gz "$REF.CIF")
+    echo $inc_cif_line >> "$CIF_FOLDER/header_inf.csv"
+    echo $(update_db "$inc_cif_line")
     rm $INC_FILE
   fi
 

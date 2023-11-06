@@ -1,7 +1,7 @@
 #!/bin/python3
 """Entrypoint for FastAPI"""
 
-# pylint: disable=C0413, W0611
+# pylint: disable=C0413, W0611, E0401
 
 from fastapi import FastAPI
 import cif_header
