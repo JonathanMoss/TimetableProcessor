@@ -5,6 +5,16 @@ set -u
 URL='https://publicdatafeeds.networkrail.co.uk/ntrod/CifFileAuthenticate'
 AMALG="$CIF_FOLDER/AMALGAMATED.CIF"
 
+function update_expired() {
+
+  echo $(
+    curl -X 'PUT' \
+    "http://api:8000/api/v1/header/update_expired" \
+    -H 'accept: application/json'
+  )
+
+}
+
 function update_db () {
   
   echo $(
@@ -164,5 +174,6 @@ for DAY in ${DAYS[@]}; do
   fi
 
 done
+echo $(update_expired)
 echo "Finished"
 

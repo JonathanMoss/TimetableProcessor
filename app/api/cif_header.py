@@ -12,6 +12,26 @@ from schemas.cif_header import Header, RequestBodyModel
 
 HEADER_ROUTES = APIRouter()
 
+@HEADER_ROUTES.put('/api/v1/header/update_expired', status_code=200, tags=["Update"])
+async def update_expired():
+    """Update expired header records"""
+
+    async with async_session() as session:
+        async with session.begin():
+            dal = HeaderDal(session)
+            await dal.mark_previous_expired()
+    return {'result': 'ok'}
+
+@HEADER_ROUTES.get('/api/v1/header/get_current_full_cif', status_code=200, tags=["Read"])
+async def get_current_full_cif():
+    """Get the current full CIF record"""
+
+    async with async_session() as session:
+        async with session.begin():
+            dal = HeaderDal(session)
+            record = await dal.get_current_full_cif()
+    return {'result': record}
+
 @HEADER_ROUTES.get('/api/v1/header/get_all/', status_code=200, tags=["Read"])
 async def get_all():
     """Get all header records from the database"""
@@ -26,7 +46,6 @@ async def get_all():
 async def insert(body: RequestBodyModel, response: Response):
     """Insert a header record into the database"""
     try:
-        print(body)
         header = Header.factory(body.csv_line)
         async with async_session() as session:
             async with session.begin():

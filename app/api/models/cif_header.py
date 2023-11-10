@@ -2,10 +2,20 @@
 
 # pylint: disable=R0903, E0401, C0413
 
+import enum
 import sys
-from sqlalchemy import Column, String, BigInteger, Integer
+from sqlalchemy import Column, String, BigInteger, Integer, Enum
 sys.path.insert(0, './app') # nopep8
 from db.config import Base
+
+class Status(enum.Enum):
+    """Valid status enumerations"""
+
+    TO_PROCESS = 1
+    EXPIRED = 2
+    PROCESSED = 3
+    ERROR = 4
+    OUT_OF_SEQUENCE = 5
 
 class HeaderRecord(Base):
     """Representation of a CIF header record"""
@@ -27,3 +37,4 @@ class HeaderRecord(Base):
     uncompressed_file_name = Column(String, nullable=False)
     downloaded_datetime = Column(String(19), nullable=False)
     processed_datetime = Column(String(19), default=None)
+    status = Column(Enum(Status), default=Status.TO_PROCESS)
