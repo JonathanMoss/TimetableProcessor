@@ -2,6 +2,7 @@
 
 # pylint: disable=R0903,E0401
 
+from typing import List
 from sqlalchemy import update
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session
@@ -16,6 +17,21 @@ class HeaderDal():
 
     def __init__(self, db_session: Session):
         self.db_session = db_session
+
+    async def get_files_to_process(self) -> List[str]:
+        """Returns a list of files that require processing"""
+        query = await self.db_session.execute(
+            select(
+                HeaderRecord.uncompressed_file_name
+            ).where(
+                HeaderRecord.status == Status.TO_PROCESS
+            ).order_by(
+                HeaderRecord.update_indicator.asc()
+            ).order_by(
+                HeaderRecord.id.asc()
+            )
+        )
+        return query.scalars().all()
 
     async def get_current_full_cif(self) -> HeaderRecord:
         """Returns the current full CIF"""

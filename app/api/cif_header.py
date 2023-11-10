@@ -12,6 +12,16 @@ from schemas.cif_header import Header, RequestBodyModel
 
 HEADER_ROUTES = APIRouter()
 
+@HEADER_ROUTES.get('/api/v1/header/files_to_process/', status_code=200, tags=["Read"])
+async def files_to_process():
+    """Return a list of CIF files that require processing"""
+
+    async with async_session() as session:
+        async with session.begin():
+            dal = HeaderDal(session)
+            records = await dal.get_files_to_process()
+    return {'result': records}
+
 @HEADER_ROUTES.put('/api/v1/header/update_expired', status_code=200, tags=["Update"])
 async def update_expired():
     """Update expired header records"""
