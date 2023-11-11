@@ -38,7 +38,6 @@ class TestHeader:
             tmp = cif_header.Header.factory(csv_line)
             assert isinstance(tmp, cif_header.Header)
 
-
     def test_with_proc_date(self, return_header_from_csv):
         tmp = return_header_from_csv[0]
         tmp = f'{tmp},2023-11-03 17:00:45'
