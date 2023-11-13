@@ -26,3 +26,10 @@ class TSDBDal():
             return query.one()
         except NoResultFound:
             return 0
+
+    async def import_cif(self, body):
+        """Import the CIF files"""
+        stmt = text(f"COPY basic_schedule FROM '{body.bs}' DELIMITER ',' CSV HEADER;")
+        query = await self.db_session.execute(stmt)
+        await self.db_session.commit()
+        return {}

@@ -1,6 +1,6 @@
 """Representation of a CIF header record"""
 
-#pylint: disable=R0903, E0401
+# pylint: disable=R0903, E0401
 
 from datetime import datetime
 import re

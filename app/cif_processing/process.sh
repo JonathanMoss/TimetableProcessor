@@ -22,6 +22,17 @@ function get_index {
     echo $(echo $response | jq -c '.result')
 }
 
+function update_db () {
+  
+  echo $(
+    curl -X 'POST' \
+    "http://api:8000/api/v1/tsdb/import/" \
+    -H 'accept: application/json' \
+    -H 'Content-Type: application/json' \
+    -d '{"bs": "'"/root/PROC_DIR/$1/bs.csv"'", "bx": "'"/root/PROC_DIR/$1/bx.csv"'", "cr": "'"/root/PROC_DIR/$1/cr.csv"'", "lo": "'"/root/PROC_DIR/$1/lo.csv"'"}'
+  )
+}
+
 function bs_csv_header {
 
     echo "id,cif_header,transaction_type,uid,"\
@@ -76,6 +87,7 @@ do
     echo $(cr_csv_header) | sed 's/ //g' >> cr.csv
     touch $FILENAME
     gawk -f /root/app/cif_convert.awk ind=$INDEX header=$HEADER $CIF_FOLDER/$FILENAME
+    # echo $(update_db $HEADER)
     # Remove empty lines
     for i in *.csv; do
         [ -f "$i" ] || break
