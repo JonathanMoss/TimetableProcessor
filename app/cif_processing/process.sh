@@ -22,6 +22,41 @@ function get_index {
     echo $(echo $response | jq -c '.result')
 }
 
+function bs_csv_header {
+
+    echo "id,cif_header,transaction_type,uid,"\
+    "date_runs_from,date_runs_to,days_run,"\
+    "bank_holiday_running,train_status,"\
+    "train_category,train_identity,headcode,"\
+    "train_service_code,portion_id,power_type,"\
+    "timing_load,speed,operating_characteristics,"\
+    "seating_class,sleepers,reservations,catering_code,"\
+    "service_branding,stp_indicator"
+}
+
+function bx_csv_header {
+
+    echo "bs_id,uic_code,atoc_code,applicable_timetable"
+
+}
+
+function lo_csv_header {
+
+    echo "bs_id,record_type,tiploc,suffix,wta," \
+    "wtp,wtd,pta,ptd,platform,line,path,activity," \
+    "engineering_allowance,pathing_allowance,performance_allowance"
+
+}
+
+function cr_csv_header {
+
+    echo "bs_id,tiploc,suffix,train_category,train_identity,headcode," \
+    "train_service_code,portion_id,power_type,timing_load,speed," \
+    "operating_characteristics,seating_class,sleepers,reservations," \
+    "catering_code,service_branding,uic_code"
+
+}
+
 cd $PROC_DIR
 rm -rf *
 
@@ -35,6 +70,10 @@ do
     mkdir $HEADER
     cd $HEADER
     touch bs.csv bx.csv lo.csv cr.csv
+    echo $(bs_csv_header) | sed 's/ //g' >> bs.csv
+    echo $(bx_csv_header) | sed 's/ //g' >> bx.csv
+    echo $(lo_csv_header) | sed 's/ //g' >> lo.csv
+    echo $(cr_csv_header) | sed 's/ //g' >> cr.csv
     touch $FILENAME
     gawk -f /root/app/cif_convert.awk ind=$INDEX header=$HEADER $CIF_FOLDER/$FILENAME
     # Remove empty lines
