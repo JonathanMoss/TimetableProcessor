@@ -13,7 +13,13 @@ function get_files_to_process {
 
 function get_index {
     # This will be a curl command to fetch the next index from the db API
-    echo 1
+    response=$(
+        curl -X 'GET' \
+        "http://api:8000/api/v1/tsdb/next_index/" \
+        -H 'accept: application/json'
+    )
+
+    echo $(echo $response | jq -c '.result')
 }
 
 cd $PROC_DIR
@@ -21,14 +27,16 @@ rm -rf *
 
 FILES_PROC=0
 INDEX=$(get_index)
-echo $(get_files_to_process) | jq -c '.result[]' --raw-output | while read -r filename;
+echo $(get_files_to_process) | jq -rc '.result' | sed 's/[{}]//g' | sed 's/"//g' | sed 's/,/\n/g' | while read -r record;
 do
+    HEADER=$(echo $record | awk -F: '{print $1}')
+    FILENAME=$(echo $record | awk -F: '{print $2}')
     let "FILES_PROC++"
-    mkdir $FILES_PROC
-    cd $FILES_PROC
-    touch bs.csv bx.csv lo.csv li.csv lt.csv cr.csv
-    touch $filename
-    gawk -f /root/app/cif_convert.awk ind=$INDEX $CIF_FOLDER/$filename
+    mkdir $HEADER
+    cd $HEADER
+    touch bs.csv bx.csv lo.csv cr.csv
+    touch $FILENAME
+    gawk -f /root/app/cif_convert.awk ind=$INDEX header=$HEADER $CIF_FOLDER/$FILENAME
     # Remove empty lines
     for i in *.csv; do
         [ -f "$i" ] || break

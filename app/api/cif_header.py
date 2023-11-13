@@ -20,7 +20,10 @@ async def files_to_process():
         async with session.begin():
             dal = HeaderDal(session)
             records = await dal.get_files_to_process()
-    return {'result': records}
+            if not records:
+                return {'result': {}}
+
+    return {'result': dict(records)}
 
 @HEADER_ROUTES.put('/api/v1/header/update_expired', status_code=200, tags=["Update"])
 async def update_expired():

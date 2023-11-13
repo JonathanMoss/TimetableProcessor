@@ -3,8 +3,7 @@
 # pylint: disable=R0903,E0401
 
 from typing import List
-from sqlalchemy import update
-from sqlalchemy.future import select
+from sqlalchemy import update, select
 from sqlalchemy.orm import Session
 
 from models.cif_header import HeaderRecord, Status
@@ -22,6 +21,7 @@ class HeaderDal():
         """Returns a list of files that require processing"""
         query = await self.db_session.execute(
             select(
+                HeaderRecord.id,
                 HeaderRecord.uncompressed_file_name
             ).where(
                 HeaderRecord.status == Status.TO_PROCESS
@@ -31,7 +31,7 @@ class HeaderDal():
                 HeaderRecord.id.asc()
             )
         )
-        return query.scalars().all()
+        return query.fetchall()
 
     async def get_current_full_cif(self) -> HeaderRecord:
         """Returns the current full CIF"""
@@ -46,6 +46,7 @@ class HeaderDal():
                 HeaderRecord.id.desc()
             )
         )
+
         return query.scalars().first()
 
     async def _set_expired_headers(self, current_full_cif_id: int):

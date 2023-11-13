@@ -26,12 +26,13 @@ class TimingPointType(enum.Enum):
     LT = 3
 
 class BasicSchedule(Base):
-    """Model of a Basic Schedule (BS) 
+    """Model of a Basic Schedule (BS)
         CIF timetable element"""
 
     __tablename__ = 'basic_schedule'
 
     id = Column(Integer, primary_key=True, index=True)
+    cif_header = Column(Integer, nullable=False)
     transaction_type = Column(Enum(TransactionType), nullable=False)
     uid = Column(String(6), nullable=False)
     date_runs_from = Column(String(6), nullable=False)
@@ -77,6 +78,8 @@ class Location(Base):
     wta = Column(String(5), default=None)
     wtp = Column(String(5), default=None)
     wtd = Column(String(5), default=None)
+    pta = Column(String(4), default=None)
+    ptd = Column(String(4), default=None)
     platform = Column(String(3), default=None)
     line = Column(String(3), default=None)
     path = Column(String(3), default=None)

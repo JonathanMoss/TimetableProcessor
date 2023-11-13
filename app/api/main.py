@@ -5,6 +5,7 @@
 
 from fastapi import FastAPI
 import cif_header
+import tsdb
 
 from db.config import engine, Base
 
@@ -15,6 +16,7 @@ app = FastAPI(
 )
 
 app.include_router(cif_header.HEADER_ROUTES)
+app.include_router(tsdb.TSDB_ROUTES)
 
 @app.on_event("startup")
 async def startup():

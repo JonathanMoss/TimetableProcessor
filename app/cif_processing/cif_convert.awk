@@ -1,7 +1,8 @@
-function bs (line, id) {
+function bs (line, id, header) {
     # Formats a Basic Schedule Record into CSV format
 
     return id "," \
+    header "," \
     substr(line, 3, 1) "," \
     substr(line, 4, 6) "," \
     substr(line, 10, 6) "," \
@@ -39,15 +40,20 @@ function lo (line, id) {
     # Formats an Origin Location Record into CSV format
 
     return id "," \
+    "LO," \
     substr(line, 3, 7) "," \
     substr(line, 10, 1) "," \
+    "," \
+    "," \
     substr(line, 11, 5) "," \
+    "," \
     substr(line, 16, 4) "," \
     substr(line, 20, 3) "," \
     substr(line, 23, 3) "," \
+    "," \
+    substr(line, 30, 12) "," \
     substr(line, 26, 2) "," \
     substr(line, 28, 2) "," \
-    substr(line, 30, 12) "," \
     substr(line, 42, 2) "\n"
 }
 
@@ -55,11 +61,12 @@ function li (line, id) {
     # Formats an Intermediate Location Record into CSV format
 
     return id "," \
+    "LI," \
     substr(line, 3, 7) "," \
     substr(line, 10, 1) "," \
     substr(line, 11, 5) "," \
-    substr(line, 16, 5) "," \
     substr(line, 21, 5) "," \
+    substr(line, 16, 5) "," \
     substr(line, 26, 4) "," \
     substr(line, 30, 4) "," \
     substr(line, 34, 3) "," \
@@ -75,13 +82,21 @@ function lt (line, id) {
     # Formats a Terminating Location Record into CSV format
 
     return id "," \
+    "LT," \
     substr(line, 3, 7) "," \
     substr(line, 10, 1) "," \
     substr(line, 11, 5) "," \
+    "," \
+    "," \
     substr(line, 16, 4) "," \
+    "," \
     substr(line, 20, 3) "," \
+    "," \
     substr(line, 23, 3) "," \
-    substr(line, 26, 12) "\n"
+    substr(line, 26, 12)  "," \
+    substr(line, 55, 2) "," \
+    substr(line, 57, 2) "," \
+    substr(line, 59, 2) "\n"
 }
 
 function cr (line, id) {
@@ -118,10 +133,6 @@ function write_files () {
     BX=""
     print LO >> "lo.csv"
     LO=""
-    print LI >> "li.csv"
-    LI=""
-    print LT >> "lt.csv"
-    LT=""
     print CR >> "cr.csv"
     CR=""
 }
@@ -130,12 +141,12 @@ BEGIN {
 
     split( ARGV[1], splitVar, "=" )
     IND=int(splitVar[2])
+    split( ARGV[2], splitVar, "=" )
+    HEADER=splitVar[2]
     NUM_PROC=0
     BS=""
     BX=""
     LO=""
-    LI=""
-    LT=""
     CR=""
     
 }
@@ -144,22 +155,22 @@ BEGIN {
     switch (substr ($0, 0, 2)) {
         case "BS":
             NUM_PROC+=1
-            BS=BS bs($0, IND+=1)
+            BS=BS gensub(/ /, "", "g", bs($0, IND+=1, HEADER))
             break
         case "BX":
-            BX=BX bx($0, IND)
+            BX=BX gensub(/ /, "", "g", bx($0, IND))
             break
         case "LO":
-            LO=LO lo($0, IND)
+            LO=LO gensub(/ /, "", "g", lo($0, IND))
             break
         case "LI":
-            LI=LI li($0, IND)
+            LO=LO gensub(/ /, "", "g", li($0, IND))
             break
         case "LT":
-            LT=LT lt($0, IND)
+            LO=LO gensub(/ /, "", "g", lt($0, IND))
             break
         case "CR":
-            CR=CR cr($0, IND)
+            CR=CR gensub(/ /, "", "g", cr($0, IND))
             break
     }
     
