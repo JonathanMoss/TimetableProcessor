@@ -35,7 +35,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - "/db-data:/var/lib/postgresql/data"
-      - "/home/tms_user/PROC_DIR:/root/PROC_DIR/"
+      - "/home/tms_user/PROC_DIR:/var/lib/postgresql/csv"
   adminer:
     container_name: adminer
     image: adminer

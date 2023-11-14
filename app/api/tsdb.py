@@ -2,7 +2,7 @@
 
 # pylint: disable=E0401
 
-from fastapi import APIRouter, Response
+from fastapi import APIRouter
 from db.config import async_session
 from dal.tsdb_dal import TSDBDal
 from schemas.tsdb import ImportCIFPayloadBody
@@ -16,16 +16,15 @@ async def get_bs_index():
     async with async_session() as session:
         async with session.begin():
             dal = TSDBDal(session)
-            records = await dal.get_current_index()
-    return {'result': records + 1}
+            index = await dal.get_current_index()
+    return {'result': index}
 
 @TSDB_ROUTES.post('/api/v1/tsdb/import/', status_code=200, tags=["Create"])
-async def import_cif(body: ImportCIFPayloadBody, response: Response):
+async def import_cif(body: ImportCIFPayloadBody):
     """Makes a request to import the CIF files specified"""
-    
+
     async with async_session() as session:
         async with session.begin():
             dal = TSDBDal(session)
             records = await dal.import_cif(body)
-    return {}
-            
+    return {'result': records['result']}

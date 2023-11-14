@@ -1,5 +1,7 @@
 """Representations of CIF TSDB objects"""
 
+# pylint: disable=E0401, R0903
+
 import pydantic
 
 class ImportCIFPayloadBody(pydantic.BaseModel):

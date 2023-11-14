@@ -13,18 +13,6 @@ from sqlalchemy import (
 )
 from db.config import Base
 
-class TransactionType(enum.Enum):
-    """Valid schedule transaction types"""
-    NEW = 1
-    DELETE = 2
-    REVISE = 3
-
-class TimingPointType(enum.Enum):
-    """Valid timing point types"""
-    LO = 1
-    LI = 2
-    LT = 3
-
 class BasicSchedule(Base):
     """Model of a Basic Schedule (BS)
         CIF timetable element"""
@@ -33,7 +21,7 @@ class BasicSchedule(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     cif_header = Column(Integer, nullable=False)
-    transaction_type = Column(Enum(TransactionType), nullable=False)
+    transaction_type = Column(String(1), nullable=False)
     uid = Column(String(6), nullable=False)
     date_runs_from = Column(String(6), nullable=False)
     date_runs_to = Column(String(6), default=None)
@@ -72,7 +60,7 @@ class Location(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     bs_id = Column(Integer, ForeignKey(BasicSchedule.id))
-    record_type = Column(Enum(TimingPointType), nullable=False)
+    record_type = Column(String(2), nullable=False)
     tiploc = Column(String(7), nullable=False)
     suffix = Column(Integer, default=1)
     wta = Column(String(5), default=None)
