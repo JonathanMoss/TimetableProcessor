@@ -62,6 +62,19 @@ class HeaderDal():
         await self.db_session.execute(query)
         await self.db_session.commit()
 
+    async def update_processed(self, header_id: int):
+        """Update the header record once processed"""
+        query = update(
+            HeaderRecord
+        ).where(
+            HeaderRecord.id == header_id
+        ).values(
+            status=Status.PROCESSED
+        )
+
+        await self.db_session.execute(query)
+        await self.db_session.commit()
+
     async def mark_previous_expired(self):
         """Update all previous header records as expired"""
         cur_full_cif = await self.get_current_full_cif()

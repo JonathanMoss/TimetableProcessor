@@ -2,16 +2,18 @@
 
 # pylint: disable=R0903, W0611, E0401
 
+import re
 from typing import Tuple
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import NoResultFound, IntegrityError
-from sqlalchemy import select, text
+from sqlalchemy import select, text, update
 from models.tsdb import (
     BasicSchedule,
     BasicExtra,
     Location,
     ChangeEnRoute
 )
+from models.cif_header import HeaderRecord, Status
 from schemas.tsdb import ImportCIFPayloadBody
 
 LOC_FIELDS = "bs_id,record_type,tiploc,suffix,wta," \
@@ -31,6 +33,20 @@ class TSDBDal():
 
     def __init__(self, db_session: Session):
         self.db_session = db_session
+
+    async def update_processed(self, header_id: int, commit=False):
+        """Update the CIF header record once processed"""
+        query = update(
+            HeaderRecord
+        ).where(
+            HeaderRecord.id == header_id
+        ).values(
+            status=Status.PROCESSED
+        )
+
+        await self.db_session.execute(query)
+        if commit:
+            await self.db_session.commit()
 
     async def get_current_index(self) -> int:
         """Returns the last used BS record index"""
@@ -63,6 +79,11 @@ class TSDBDal():
             await self.db_session.execute(text(stmt))
             res.append(f'{body.bx} imported')
 
+            header_id = re.findall('[0-9]{1,}', body.bs)
+            if not header_id:
+                await self.db_session.commit()
+                return {'result': res}
+            await self.update_processed(int(header_id[0]))
             await self.db_session.commit()
             return {'result': res}
         except IntegrityError:

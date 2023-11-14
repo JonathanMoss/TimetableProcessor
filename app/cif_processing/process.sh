@@ -76,40 +76,44 @@ function cr_csv_header {
 }
 
 cd $PROC_DIR
-# rm -rf *
+rm -rf *
 
 # Fetch each file to process and loop through...
 echo $(get_files_to_process) | jq -rc '.result' | sed 's/[{}]//g' | sed 's/"//g' | sed 's/,/\n/g' | while read -r record;
 do
+    if [[ ! -v 1 ]]; then
+        echo "No records to process"
+        exit 1
+    fi
     HEADER=$(echo $record | awk -F: '{print $1}')  # Get the file header index
     FILENAME=$(echo $record | awk -F: '{print $2}') # Get the CIF filename to process
     INDEX=$(get_index) # Get the bs_id to start from
 
-    # mkdir $HEADER
-    # cd $HEADER
+    mkdir $HEADER
+    cd $HEADER
 
     # Create the csv files and write headers
-    # touch bs.csv bx.csv lo.csv cr.csv
-    # echo $(bs_csv_header) | sed 's/ //g' >> bs.csv
-    # echo $(bx_csv_header) | sed 's/ //g' >> bx.csv
-    # echo $(lo_csv_header) | sed 's/ //g' >> lo.csv
-    # echo $(cr_csv_header) | sed 's/ //g' >> cr.csv
-    # touch $FILENAME
+    touch bs.csv bx.csv lo.csv cr.csv
+    echo $(bs_csv_header) | sed 's/ //g' >> bs.csv
+    echo $(bx_csv_header) | sed 's/ //g' >> bx.csv
+    echo $(lo_csv_header) | sed 's/ //g' >> lo.csv
+    echo $(cr_csv_header) | sed 's/ //g' >> cr.csv
+    touch $FILENAME
 
     # Process each CIF file
-    # gawk -f /root/app/cif_convert.awk ind=$INDEX header=$HEADER $CIF_FOLDER/$FILENAME
+    gawk -f /root/app/cif_convert.awk ind=$INDEX header=$HEADER $CIF_FOLDER/$FILENAME
 
     # Remove empty lines
-    # for i in *.csv; do
-    #     [ -f "$i" ] || break
-    #     sed -i '/^$/d' $i
-    # done
+    for i in *.csv; do
+        [ -f "$i" ] || break
+        sed -i '/^$/d' $i
+    done
 
     # Import the created records into the database
     update_db $HEADER
 
     # Update bs.count
-    # save_index
+    save_index
 
     cd ..
 done
