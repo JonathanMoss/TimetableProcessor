@@ -81,12 +81,15 @@ rm -rf *
 # Fetch each file to process and loop through...
 echo $(get_files_to_process) | jq -rc '.result' | sed 's/[{}]//g' | sed 's/"//g' | sed 's/,/\n/g' | while read -r record;
 do
-    if [[ ! -v 1 ]]; then
+
+    HEADER=$(echo $record | awk -F: '{print $1}')  # Get the file header index
+    FILENAME=$(echo $record | awk -F: '{print $2}') # Get the CIF filename to process
+
+    if [[ -z "${HEADER}" ]]; then
         echo "No records to process"
         exit 1
     fi
-    HEADER=$(echo $record | awk -F: '{print $1}')  # Get the file header index
-    FILENAME=$(echo $record | awk -F: '{print $2}') # Get the CIF filename to process
+
     INDEX=$(get_index) # Get the bs_id to start from
 
     mkdir $HEADER
