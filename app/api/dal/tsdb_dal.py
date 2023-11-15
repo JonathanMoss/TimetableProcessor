@@ -88,3 +88,9 @@ class TSDBDal():
             return {'result': res}
         except IntegrityError:
             return {'result': 'IntegrityError'}
+
+"""
+SELECT COUNT(*) FROM basic_schedule WHERE CAST (basic_schedule.date_runs_to AS DATE) < CAST ('231114' AS DATE);
+SELECT * FROM basic_schedule WHERE transaction_type = 'D';
+SELECT * FROM basic_schedule WHERE transaction_type = 'R';
+"""
