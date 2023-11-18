@@ -90,7 +90,7 @@ class TSDBDal():
             return {'result': 'IntegrityError'}
 
 """
-SELECT COUNT(*) FROM basic_schedule WHERE CAST (basic_schedule.date_runs_to AS DATE) < CAST ('231114' AS DATE);
+SELECT COUNT(*) FROM basic_schedule WHERE CAST (basic_schedule.date_runs_to AS DATE) < (current_date - INTEGER '1');
 SELECT * FROM basic_schedule WHERE transaction_type = 'D';
 SELECT * FROM basic_schedule WHERE transaction_type = 'R';
 """
