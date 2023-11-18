@@ -9,6 +9,26 @@ from schemas.tsdb import ImportCIFPayloadBody
 
 TSDB_ROUTES = APIRouter()
 
+@TSDB_ROUTES.delete('/api/v1/tsdb/truncate_bs/', status_code=200, tags=["DELETE"])
+async def truncate_bs():
+    """Truncates the basic_schedule table"""
+
+    async with async_session() as session:
+        async with session.begin():
+            dal = TSDBDal(session)
+            await dal.empty_bs()
+    return {'result': 'ok'}
+
+@TSDB_ROUTES.delete('/api/v1/tsdb/delete_expired/', status_code=200, tags=["DELETE"])
+async def delete_expired():
+    """Deletes expired records"""
+
+    async with async_session() as session:
+        async with session.begin():
+            dal = TSDBDal(session)
+            await dal.delete_expired()
+    return {'result': 'ok'}
+
 @TSDB_ROUTES.get('/api/v1/tsdb/next_index/', status_code=200, tags=["Read"])
 async def get_bs_index():
     """Returns the next available basic schedule index"""

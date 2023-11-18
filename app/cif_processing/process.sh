@@ -4,10 +4,33 @@ set -u
 
 CSV_ROOT="/var/lib/postgresql/csv"
 
+function truncate_bs {
+    # Hit the endpoint to start truncate of basic_schedule table
+    curl -sS -X 'DELETE' \
+    'http://api:8000/api/v1/tsdb/truncate_bs/' \
+    -H 'accept: application/json'
+}
+
+function is_full_cif () {
+    # Returns 0 if not full cif, 1 if full cif
+    response=$(
+        curl -sS -X 'GET' \
+        "http://api:8000/api/v1/header/get_update/indicator/$1" \
+        -H 'accept: application/json'
+    )
+
+    full_cif=$(echo $response | jq --raw-output '.result')
+    if [[ $full_cif == 'F' ]]; then
+        echo '1'
+    else
+        echo '0'
+    fi
+}
+
 function get_files_to_process {
     # Returns a list of filenames to process from db
     echo $(
-        curl -X 'GET' \
+        curl -sS -X 'GET' \
         "http://api:8000/api/v1/header/files_to_process/" \
         -H 'accept: application/json'
     )
@@ -22,7 +45,7 @@ function get_index {
     # Return 0 or the last index for bs records
     if ! [ -f bs.count ]; then
         response=$(
-            curl -X 'GET' \
+            curl -sS -X 'GET' \
             "http://api:8000/api/v1/tsdb/next_index/" \
             -H 'accept: application/json'
         )
@@ -35,7 +58,7 @@ function get_index {
 function update_db () {
   # Sends a request to import the files into the database
   echo $(
-    curl -X 'POST' \
+    curl -sS -X 'POST' \
     "http://api:8000/api/v1/tsdb/import/" \
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \
@@ -88,6 +111,11 @@ do
     if [[ -z "${HEADER}" ]]; then
         echo "No records to process"
         exit 1
+    fi
+
+    # If its a full CIF, wipe the database
+    if [[ $(is_full_cif $HEADER) == '1' ]]; then
+        truncate_bs
     fi
 
     INDEX=$(get_index) # Get the bs_id to start from

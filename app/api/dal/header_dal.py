@@ -2,10 +2,10 @@
 
 # pylint: disable=R0903,E0401
 
-from typing import List
+from typing import List, Union
 from sqlalchemy import update, select
 from sqlalchemy.orm import Session
-
+from sqlalchemy.exc import NoResultFound
 from models.cif_header import HeaderRecord, Status
 from schemas.cif_header import Header
 
@@ -32,6 +32,20 @@ class HeaderDal():
             )
         )
         return query.fetchall()
+
+    async def get_update_indicator(self, header_id: int) -> Union[str, None]:
+        """Returns the update_indcator for the passed header id"""
+        try:
+            query = await self.db_session.execute(
+                select(
+                    HeaderRecord.update_indicator
+                ).where(
+                    HeaderRecord.id == header_id
+                )
+            )
+            return query.one()[0]
+        except NoResultFound:
+            return None
 
     async def get_current_full_cif(self) -> HeaderRecord:
         """Returns the current full CIF"""

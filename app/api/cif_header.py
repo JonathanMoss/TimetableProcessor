@@ -12,6 +12,16 @@ from schemas.cif_header import Header, RequestBodyModel
 
 HEADER_ROUTES = APIRouter()
 
+@HEADER_ROUTES.get('/api/v1/header/get_update/indicator/{index}', status_code=200, tags=["Read"])
+async def get_update_indicator(index: int):
+    """Get the update indicator for the header record id passed"""
+
+    async with async_session() as session:
+        async with session.begin():
+            dal = HeaderDal(session)
+            result = await dal.get_update_indicator(index)
+    return {'result': result}
+
 @HEADER_ROUTES.get('/api/v1/header/files_to_process/', status_code=200, tags=["Read"])
 async def files_to_process():
     """Return a list of CIF files that require processing"""

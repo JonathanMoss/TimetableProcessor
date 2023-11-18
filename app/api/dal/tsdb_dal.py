@@ -34,6 +34,13 @@ class TSDBDal():
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
+    async def empty_bs(self, commit=True):
+        """TRUNATES basic_schedule table"""
+        stmt = 'TRUNCATE TABLE basic_schedule CASCADE;'
+        await self.db_session.execute(text(stmt))
+        if commit:
+            await self.db_session.commit()
+
     async def update_processed(self, header_id: int, commit=False):
         """Update the CIF header record once processed"""
         query = update(
@@ -45,6 +52,16 @@ class TSDBDal():
         )
 
         await self.db_session.execute(query)
+        if commit:
+            await self.db_session.commit()
+
+    async def delete_expired(self, commit=True) -> None:
+        """Delete expired records"""
+
+        stmt = "DELETE FROM basic_schedule " \
+            "WHERE CAST (basic_schedule.date_runs_to AS DATE) " \
+            "< (current_date - INTEGER '1');"
+        await self.db_session.execute(text(stmt))
         if commit:
             await self.db_session.commit()
 
@@ -90,7 +107,6 @@ class TSDBDal():
             return {'result': 'IntegrityError'}
 
 """
-SELECT COUNT(*) FROM basic_schedule WHERE CAST (basic_schedule.date_runs_to AS DATE) < (current_date - INTEGER '1');
 SELECT * FROM basic_schedule WHERE transaction_type = 'D';
 SELECT * FROM basic_schedule WHERE transaction_type = 'R';
 """
