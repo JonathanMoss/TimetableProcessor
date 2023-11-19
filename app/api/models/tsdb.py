@@ -49,7 +49,7 @@ class BasicExtra(Base):
     __tablename__ = 'basic_extra'
 
     id = Column(Integer, primary_key=True, index=True)
-    bs_id = Column(Integer, ForeignKey(BasicSchedule.id, ondelete="cascade"))
+    bs_id = Column(Integer, ForeignKey(BasicSchedule.id, ondelete="cascade"), index=True)
     uic_code = Column(String(5), default=None)
     atoc_code = Column(String(2), nullable=False)
     applicable_timetable = Column(String(1), nullable=False)
@@ -59,7 +59,7 @@ class Location(Base):
     __tablename__ = 'location'
 
     id = Column(Integer, primary_key=True, index=True)
-    bs_id = Column(Integer, ForeignKey(BasicSchedule.id, ondelete="cascade"))
+    bs_id = Column(Integer, ForeignKey(BasicSchedule.id, ondelete="cascade"), index=True)
     record_type = Column(String(2), nullable=False)
     tiploc = Column(String(7), nullable=False)
     suffix = Column(Integer, default=1)
@@ -81,7 +81,7 @@ class ChangeEnRoute(Base):
     __tablename__ = 'changes_en_route'
 
     id = Column(Integer, primary_key=True, index=True)
-    bs_id = Column(Integer, ForeignKey(BasicSchedule.id, ondelete="cascade"))
+    bs_id = Column(Integer, ForeignKey(BasicSchedule.id, ondelete="cascade"), index=True)
     tiploc = Column(String(7), nullable=False)
     suffix = Column(Integer, default=1)
     train_category = Column(String(2), default=None)

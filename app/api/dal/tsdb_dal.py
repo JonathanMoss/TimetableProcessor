@@ -2,6 +2,7 @@
 
 # pylint: disable=R0903, W0611, E0401
 
+import asyncio
 import re
 from typing import Tuple
 from sqlalchemy.orm import Session
@@ -58,10 +59,7 @@ class TSDBDal():
     async def delete_expired(self, commit=True) -> None:
         """Delete expired records"""
 
-        stmt = "DELETE FROM basic_schedule " \
-            "WHERE CAST (basic_schedule.date_runs_to AS DATE) " \
-            "< (current_date - INTEGER '1');"
-        await self.db_session.execute(text(stmt))
+        await self.db_session.execute(text("CALL delete_expired();"))
         if commit:
             await self.db_session.commit()
 
@@ -109,4 +107,12 @@ class TSDBDal():
 """
 SELECT * FROM basic_schedule WHERE transaction_type = 'D';
 SELECT * FROM basic_schedule WHERE transaction_type = 'R';
-"""
+
+CREATE OR REPLACE PROCEDURE delete_expired()
+LANGUAGE SQL
+AS $$
+DELETE FROM changes_en_route WHERE bs_id IN (SELECT id FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1'));
+DELETE FROM basic_extra WHERE bs_id IN (SELECT id FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1'));
+DELETE FROM location WHERE bs_id IN (SELECT id FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1'));
+DELETE FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1');
+$$"""
