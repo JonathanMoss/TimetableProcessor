@@ -9,6 +9,26 @@ from schemas.tsdb import ImportCIFPayloadBody
 
 TSDB_ROUTES = APIRouter()
 
+@TSDB_ROUTES.delete('/api/v1/tsdb/process_del/', status_code=200, tags=["DELETE"])
+async def process_del():
+    """Processes CIF delete transactions"""
+
+    async with async_session() as session:
+        async with session.begin():
+            dal = TSDBDal(session)
+            await dal.process_del()
+    return {'result': 'ok'}
+
+@TSDB_ROUTES.put('/api/v1/tsdb/process_rep/', status_code=200, tags=["Update"])
+async def process_rep():
+    """Processes CIF replace transactions"""
+
+    async with async_session() as session:
+        async with session.begin():
+            dal = TSDBDal(session)
+            await dal.process_rep()
+    return {'result': 'ok'}
+
 @TSDB_ROUTES.delete('/api/v1/tsdb/truncate_bs/', status_code=200, tags=["DELETE"])
 async def truncate_bs():
     """Truncates the basic_schedule table"""

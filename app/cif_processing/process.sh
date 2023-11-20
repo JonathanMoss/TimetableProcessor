@@ -4,6 +4,27 @@ set -u
 
 CSV_ROOT="/var/lib/postgresql/csv"
 
+function delete_expired {
+    # Hit the endpoint to delete expired records
+    curl -sS -X 'DELETE' \
+    'http://api:8000/api/v1/tsdb/delete_expired/' \
+    -H 'accept: application/json'    
+}
+
+function process_del {
+    # Hit the endpoint to process CIF deletions
+    curl -sS -X 'DELETE' \
+    'http://api:8000/api/v1/tsdb/process_del/' \
+    -H 'accept: application/json'    
+}
+
+function process_rep {
+    # Hit the endpoint to process CIF replacements
+    curl -sS -X 'PUT' \
+    'http://api:8000/api/v1/tsdb/process_rep/' \
+    -H 'accept: application/json'    
+}
+
 function truncate_bs {
     # Hit the endpoint to start truncate of basic_schedule table
     curl -sS -X 'DELETE' \
@@ -148,3 +169,8 @@ do
 
     cd ..
 done
+process_del
+process_rep
+delete_expired
+
+
