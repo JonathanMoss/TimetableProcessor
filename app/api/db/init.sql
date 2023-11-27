@@ -135,13 +135,97 @@ $func$
 DECLARE 
     q RECORD;
 BEGIN
-    FOR q IN SELECT valid_uid FROM return_uid_for_location(in_tiploc, qry_date)
+    FOR q IN SELECT DISTINCT(valid_uid) FROM return_uid_for_location(in_tiploc, qry_date)
     LOOP
         RETURN QUERY SELECT * FROM basic_schedule 
         WHERE uid = q.valid_uid 
         AND 
-        days_run LIKE format_days_run(qry_date) 
+        days_run LIKE format_days_run(qry_date)
         ORDER BY stp_indicator ASC, id DESC LIMIT 1;
     END LOOP;
 END;
 $func$ LANGUAGE plpgsql;
+
+-- Return valid schedule ID and location ID for TRJA query
+DROP function trja_schedules(text,text);
+CREATE OR REPLACE FUNCTION trja_schedules(in_tiploc TEXT, qry_date TEXT)
+    RETURNS TABLE(id INT, bs_id INT) 
+    LANGUAGE 'plpgsql' STABLE STRICT AS
+    $func$
+        BEGIN
+            RETURN QUERY SELECT location.id, location.bs_id FROM location WHERE
+                location.tiploc = in_tiploc
+                AND
+                location.bs_id IN (
+                    SELECT temp.id FROM location_line_up(in_tiploc, qry_date) temp
+                    WHERE 
+                        date_runs_from::DATE <= qry_date::DATE
+                    AND 
+                        date_runs_to::DATE >= qry_date::DATE
+                );
+        END;
+    $func$;
+
+
+-- TRJA like TRUST lineup
+DROP FUNCTION trja(text,text);
+CREATE OR REPLACE FUNCTION trja(in_tiploc TEXT, qry_date TEXT)
+    RETURNS TABLE(
+        h_code VARCHAR,
+        uid VARCHAR,
+        origin VARCHAR,
+        destination VARCHAR,
+        arrive TIME,
+        pass TIME,
+        depart TIME,
+        path VARCHAR,
+        platform VARCHAR,
+        line VARCHAR,
+        stp VARCHAR
+    )
+    LANGUAGE 'plpgsql' 
+    STABLE STRICT AS
+    $$
+    DECLARE
+        r RECORD;
+    BEGIN
+        FOR r IN SELECT * FROM trja_schedules(in_tiploc, qry_date)
+        LOOP
+            SELECT basic_schedule.train_identity FROM basic_schedule INTO h_code
+                WHERE basic_schedule.id = r.bs_id;
+            SELECT basic_schedule.uid FROM basic_schedule INTO uid
+                WHERE basic_schedule.id = r.bs_id;
+            SELECT location.tiploc FROM location INTO origin
+                WHERE location.bs_id = r.bs_id AND
+                location.record_type = 'LO';
+            SELECT location.tiploc FROM location INTO destination
+                WHERE location.bs_id = r.bs_id AND
+                location.record_type = 'LT';
+            SELECT location.wta FROM location INTO arrive
+                WHERE location.id = r.id;
+            SELECT location.wtp FROM location INTO pass
+                WHERE location.id = r.id;
+            SELECT location.wtd FROM location INTO depart
+                WHERE location.id = r.id;
+            SELECT location.path FROM location INTO path
+                WHERE location.id = r.id;
+            SELECT location.platform FROM location INTO platform
+                WHERE location.id = r.id;
+            SELECT location.line FROM location INTO line
+                WHERE location.id = r.id;
+            SELECT 
+                CASE 
+                    WHEN basic_schedule.stp_indicator = 'P' THEN 'LTP'
+                    WHEN basic_schedule.stp_indicator = 'N' THEN 'STP'
+                    WHEN basic_schedule.stp_indicator = 'O' THEN 'VAR' 
+                END
+                AS stp_indicator
+            
+            FROM basic_schedule INTO stp
+                WHERE basic_schedule.id = r.bs_id;
+            RETURN NEXT;
+        END LOOP;
+    END;
+    $$;
+
+SELECT * FROM trja('PADTON', '2023-11-27') ORDER BY LEAST(arrive, pass, depart);
