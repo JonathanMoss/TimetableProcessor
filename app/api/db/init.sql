@@ -1,72 +1,98 @@
 -- To be imported on database initialisation...
 
 -- Stored Procedure to process replace transactions
+DROP PROCEDURE IF EXISTS process_rep();
 CREATE OR REPLACE PROCEDURE process_rep() AS
 $func$
-DECLARE f RECORD;
-BEGIN
-FOR f in SELECT *
-FROM basic_schedule
-WHERE transaction_type = 'D'
-LOOP
-DELETE FROM basic_schedule WHERE id IN
-(SELECT id FROM basic_schedule
-WHERE id < f.id AND uid = f.uid AND date_runs_from = f.date_runs_from AND stp_indicator = f.stp_indicator ORDER BY id ASC LIMIT 1);
-END LOOP;
-UPDATE basic_schedule
-SET transaction_type = 'N'
-WHERE transaction_type = 'R';
-END;
+    DECLARE 
+        f RECORD;
+    BEGIN
+        FOR f in SELECT *
+            FROM basic_schedule
+            WHERE transaction_type = 'R'
+        LOOP
+            DELETE FROM basic_schedule WHERE id IN
+                (SELECT id FROM basic_schedule
+                    WHERE id < f.id 
+                    AND 
+                    uid = f.uid 
+                    AND 
+                    date_runs_from = f.date_runs_from 
+                    AND 
+                    stp_indicator = f.stp_indicator 
+                    ORDER BY id ASC LIMIT 1);
+        END LOOP;
+        UPDATE basic_schedule
+            SET transaction_type = 'N'
+            WHERE transaction_type = 'R';
+    END;
 $func$ LANGUAGE plpgsql;
 
 -- Stored Procedure to process delete transactions
+DROP PROCEDURE IF EXISTS process_del();
 CREATE OR REPLACE PROCEDURE process_del() AS
 $func$
-DECLARE f RECORD;
-BEGIN
-FOR f in SELECT * 
-FROM basic_schedule 
-WHERE transaction_type = 'D'
-LOOP
-DELETE FROM basic_schedule WHERE id IN
-(SELECT id FROM basic_schedule
-WHERE id < f.id AND uid = f.uid AND date_runs_from = f.date_runs_from AND stp_indicator = f.stp_indicator ORDER BY id ASC LIMIT 1);
-DELETE FROM basic_schedule WHERE transaction_type = 'D';
-END LOOP;
-END;
+    DECLARE 
+        f RECORD;
+    BEGIN
+        FOR f in SELECT * 
+            FROM basic_schedule 
+            WHERE transaction_type = 'D'
+    LOOP
+        DELETE FROM basic_schedule WHERE id IN
+            (SELECT id FROM basic_schedule
+                WHERE id < f.id 
+                AND 
+                uid = f.uid 
+                AND 
+                date_runs_from = f.date_runs_from 
+                AND 
+                stp_indicator = f.stp_indicator 
+                ORDER BY id ASC LIMIT 1);
+                
+        DELETE FROM basic_schedule WHERE transaction_type = 'D';
+    END LOOP;
+    END;
 $func$ LANGUAGE plpgsql;
 
 -- Stored Procedure to delete expired schedules
-CREATE OR REPLACE PROCEDURE delete_expired()
-LANGUAGE SQL
-AS $$
-DELETE FROM changes_en_route WHERE bs_id IN (SELECT id FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1'));
-DELETE FROM basic_extra WHERE bs_id IN (SELECT id FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1'));
-DELETE FROM location WHERE bs_id IN (SELECT id FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1'));
-DELETE FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1');
-$$;
+DROP PROCEDURE IF EXISTS delete_expired();
+CREATE OR REPLACE PROCEDURE delete_expired() AS
+$func$
+    DELETE FROM changes_en_route WHERE bs_id IN 
+        (SELECT id FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1'));
+    DELETE FROM basic_extra WHERE bs_id IN 
+        (SELECT id FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1'));
+    DELETE FROM location WHERE bs_id IN 
+        (SELECT id FROM basic_schedule WHERE CAST (date_runs_to AS DATE) < (current_date - INTEGER '1'));
+    DELETE FROM basic_schedule WHERE CAST 
+        (date_runs_to AS DATE) < (current_date - INTEGER '1');
+$func$ LANGUAGE SQL;
 
 -- Stored Procedure to truncate all schedules
-CREATE OR REPLACE PROCEDURE truncate_all()
-LANGUAGE SQL
-AS $$
-TRUNCATE TABLE basic_schedule CASCADE;
-$$;
+DROP PROCEDURE IF EXISTS truncate_all();
+CREATE OR REPLACE PROCEDURE truncate_all() AS 
+$func$
+    TRUNCATE TABLE basic_schedule CASCADE;
+$func$ LANGUAGE SQL;
 
 -- Get applicable schedule uid's for date
-CREATE OR REPLACE FUNCTION get_applicable_uid_by_date(qry_date text)
-    RETURNS TABLE(valid_uid text) LANGUAGE 'plpgsql' STABLE STRICT AS $$
+DROP FUNCTION IF EXISTS get_applicable_uid_by_date(TEXT);
+CREATE OR REPLACE FUNCTION get_applicable_uid_by_date(qry_date TEXT)
+    RETURNS TABLE(valid_uid text) LANGUAGE 'plpgsql' STABLE STRICT AS 
+$func$
 BEGIN
     RETURN QUERY SELECT DISTINCT(basic_schedule.uid::text) AS valid_uid
     FROM basic_schedule WHERE date_runs_from::date <= qry_date::date AND 
     date_runs_to::date >= qry_date::date AND
     days_run LIKE format_days_run(qry_date);
 END
-$$;
+$func$;
 
 -- Return the days run string
-CREATE OR REPLACE FUNCTION format_days_run(qry_date text) 
-RETURNS text AS
+DROP FUNCTION IF EXISTS format_days_run(TEXT);
+CREATE OR REPLACE FUNCTION format_days_run(qry_date TEXT) 
+RETURNS TEXT AS
 $$
 DECLARE
     day_of_week INTEGER := EXTRACT('DOW' FROM qry_date::date) + 1;
@@ -96,19 +122,22 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Get schedules for DATE
-CREATE OR REPLACE FUNCTION get_schedules(qry_date text) 
-RETURNS setof basic_schedule AS
+DROP FUNCTION IF EXISTS get_schedules(TEXT);
+CREATE OR REPLACE FUNCTION get_schedules(qry_date TEXT) 
+RETURNS SETOF basic_schedule AS
 $func$
-DECLARE q RECORD;
+DECLARE 
+    q RECORD;
 BEGIN
-FOR q IN SELECT valid_uid FROM get_applicable_uid_by_date(qry_date)
-LOOP
-RETURN QUERY SELECT * FROM basic_schedule WHERE uid = q.valid_uid AND days_run LIKE format_days_run(qry_date) ORDER BY stp_indicator ASC, id DESC LIMIT 1;
-END LOOP;
+    FOR q IN SELECT valid_uid FROM get_applicable_uid_by_date(qry_date)
+    LOOP
+    RETURN QUERY SELECT * FROM basic_schedule WHERE uid = q.valid_uid AND days_run LIKE format_days_run(qry_date) ORDER BY stp_indicator ASC, id DESC LIMIT 1;
+    END LOOP;
 END;
 $func$ LANGUAGE plpgsql;
 
 -- Produce valid UID for a location on the given date
+DROP FUNCTION IF EXISTS return_uid_for_location(TEXT,TEXT);
 CREATE OR REPLACE FUNCTION return_uid_for_location(in_tiploc TEXT, qry_date TEXT)
     RETURNS TABLE(valid_uid text) LANGUAGE 'plpgsql' STABLE STRICT AS
 $LINEUP$
@@ -129,6 +158,7 @@ END;
 $LINEUP$;
 
 -- Return a location line-up
+DROP FUNCTION IF EXISTS location_line_up(TEXT,TEXT);
 CREATE OR REPLACE FUNCTION location_line_up(in_tiploc TEXT, qry_date TEXT)
     RETURNS SETOF basic_schedule AS
 $func$
@@ -147,7 +177,7 @@ END;
 $func$ LANGUAGE plpgsql;
 
 -- Return valid schedule ID and location ID for TRJA query
-DROP function trja_schedules(text,text);
+DROP FUNCTION IF EXISTS trja_schedules(TEXT,TEXT);
 CREATE OR REPLACE FUNCTION trja_schedules(in_tiploc TEXT, qry_date TEXT)
     RETURNS TABLE(id INT, bs_id INT) 
     LANGUAGE 'plpgsql' STABLE STRICT AS
@@ -168,7 +198,7 @@ CREATE OR REPLACE FUNCTION trja_schedules(in_tiploc TEXT, qry_date TEXT)
 
 
 -- TRJA like TRUST lineup
-DROP FUNCTION trja(text,text);
+DROP FUNCTION IF EXISTS trja(TEXT,TEXT);
 CREATE OR REPLACE FUNCTION trja(in_tiploc TEXT, qry_date TEXT)
     RETURNS TABLE(
         h_code VARCHAR,
@@ -228,4 +258,4 @@ CREATE OR REPLACE FUNCTION trja(in_tiploc TEXT, qry_date TEXT)
     END;
     $$;
 
-SELECT * FROM trja('PADTON', '2023-11-27') ORDER BY LEAST(arrive, pass, depart);
+-- SELECT * FROM trja('PADTON', '2023-11-27') ORDER BY LEAST(arrive, pass, depart);
