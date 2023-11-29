@@ -390,11 +390,11 @@ CREATE OR REPLACE FUNCTION trja(in_tiploc TEXT, qry_date TEXT)
             SELECT location.tiploc FROM location INTO destination
                 WHERE location.bs_id = r.bs_id AND
                 location.record_type = 'LT';
-            SELECT location.wta FROM location INTO arrive
+            SELECT REPLACE(location.wta, 'H', '30') FROM location INTO arrive
                 WHERE location.id = r.id;
-            SELECT location.wtp FROM location INTO pass
+            SELECT REPLACE(location.wtp, 'H', '30') FROM location INTO pass
                 WHERE location.id = r.id;
-            SELECT location.wtd FROM location INTO depart
+            SELECT REPLACE(location.wtd, 'H', '30') FROM location INTO depart
                 WHERE location.id = r.id;
             SELECT location.path FROM location INTO path
                 WHERE location.id = r.id;
@@ -417,4 +417,4 @@ CREATE OR REPLACE FUNCTION trja(in_tiploc TEXT, qry_date TEXT)
     END;
     $$;
 
--- SELECT * FROM trja('PADTON', '2023-11-27') ORDER BY LEAST(arrive, pass, depart);
+SELECT * FROM trja('CREWE', '2023-11-29') ORDER BY LEAST(arrive, pass, depart);
