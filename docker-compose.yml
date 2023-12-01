@@ -56,3 +56,12 @@ services:
       dockerfile: ./docker/api/Dockerfile
     ports:
       - 8000:8000
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@domain.com
+      PGADMIN_DEFAULT_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 8088:80

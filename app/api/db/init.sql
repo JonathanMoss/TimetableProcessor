@@ -417,4 +417,5 @@ CREATE OR REPLACE FUNCTION trja(in_tiploc TEXT, qry_date TEXT)
     END;
     $$;
 
-SELECT * FROM trja('CREWE', '2023-11-29') ORDER BY LEAST(arrive, pass, depart);
+-- SELECT * FROM trja('CREWE', '2023-11-29') ORDER BY LEAST(arrive, pass, depart);
+-- SELECT * FROM trja('BHAMNWS', '2023-12-01') WHERE LEAST(arrive, pass, depart) > (current_time - INTERVAL '10 minutes') AND LEAST (arrive, pass, depart) < (current_time + INTERVAL '4 hours') ORDER BY LEAST(arrive, pass, depart);
