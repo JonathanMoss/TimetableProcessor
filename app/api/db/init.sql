@@ -419,3 +419,9 @@ CREATE OR REPLACE FUNCTION trja(in_tiploc TEXT, qry_date TEXT)
 
 -- SELECT * FROM trja('CREWE', '2023-11-29') ORDER BY LEAST(arrive, pass, depart);
 -- SELECT * FROM trja('BHAMNWS', '2023-12-01') WHERE LEAST(arrive, pass, depart) > (current_time - INTERVAL '10 minutes') AND LEAST (arrive, pass, depart) < (current_time + INTERVAL '4 hours') ORDER BY LEAST(arrive, pass, depart);
+-- SELECT * FROM (
+-- 	(SELECT '2023-12-03' AS dt, * FROM trja('BHAMNWS', '2023-12-03'))
+-- 		UNION
+-- 	(SELECT '2023-12-04' AS dt, * FROM trja('BHAMNWS', '2023-12-04'))
+-- 	)
+-- ORDER BY dt ASC, LEAST(arrive,pass,depart);
