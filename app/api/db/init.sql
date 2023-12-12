@@ -298,7 +298,7 @@ $func$ LANGUAGE plpgsql;
 -- Produce valid UID for a location on the given date
 DROP FUNCTION IF EXISTS return_uid_for_location(TEXT,TEXT);
 CREATE OR REPLACE FUNCTION return_uid_for_location(in_tiploc TEXT, qry_date TEXT)
-    RETURNS TABLE(valid_uid text) LANGUAGE 'plpgsql' STABLE STRICT AS
+    RETURNS TABLE(valid_uid text) LANGUAGE 'plpgsql' AS
 $LINEUP$
 DECLARE
     q RECORD;
@@ -330,6 +330,10 @@ BEGIN
         WHERE uid = q.valid_uid 
         AND 
         days_run LIKE format_days_run(qry_date)
+        AND
+        date_runs_from::date <= qry_date::date 
+        AND 
+        date_runs_to::date >= qry_date::date
         ORDER BY stp_indicator ASC, id DESC LIMIT 1;
     END LOOP;
 END;
@@ -348,9 +352,9 @@ CREATE OR REPLACE FUNCTION trja_schedules(in_tiploc TEXT, qry_date TEXT)
                 location.bs_id IN (
                     SELECT temp.id FROM location_line_up(in_tiploc, qry_date) temp
                     WHERE 
-                        date_runs_from::DATE <= qry_date::DATE
+                        temp.date_runs_from::date <= qry_date::date
                     AND 
-                        date_runs_to::DATE >= qry_date::DATE
+                        temp.date_runs_to::date >= qry_date::date
                 );
         END;
     $func$;
