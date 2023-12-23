@@ -35,21 +35,38 @@ class TSDBDal():
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    async def process_del(self, commit=True):
+    async def bs_count(self) -> int:
+        """Return the number of basic_schedule records"""
+        result = await self.db_session.execute(
+            text('SELECT COUNT(*) FROM basic_schedule;')
+        )
+        return result.one()[0]
+
+    async def process_del(self, commit=True) -> dict:
         """Processes CIF delete transactions"""
+        pre_count = await self.bs_count()
         stmt = 'CALL process_del();'
         await self.db_session.execute(text(stmt))
+        post_count = await self.bs_count()
         if commit:
             await self.db_session.commit()
+        return {
+            'records_deleted': pre_count - post_count
+        }
 
-    async def process_rep(self, commit=True):
+    async def process_rep(self, commit=True) -> dict:
         """Process CIF replace transactions"""
+        pre_count = await self.bs_count()
         stmt = 'CALL process_rep();'
         await self.db_session.execute(text(stmt))
+        post_count = await self.bs_count()
         if commit:
             await self.db_session.commit()
+        return {
+            'records_replaced': pre_count - post_count
+        }
 
-    async def empty_bs(self, commit=True):
+    async def empty_bs(self, commit=True) -> None:
         """TRUNATES basic_schedule table"""
         stmt = 'TRUNCATE TABLE basic_schedule CASCADE;'
         await self.db_session.execute(text(stmt))
@@ -70,12 +87,16 @@ class TSDBDal():
         if commit:
             await self.db_session.commit()
 
-    async def delete_expired(self, commit=True) -> None:
+    async def delete_expired(self, commit=True) -> dict:
         """Delete expired records"""
-
+        pre_count = await self.bs_count()
         await self.db_session.execute(text("CALL delete_expired();"))
+        post_count = await self.bs_count()
         if commit:
             await self.db_session.commit()
+        return {
+            'records_exired': pre_count - post_count
+        }
 
     async def get_current_index(self) -> int:
         """Returns the last used BS record index"""

@@ -168,9 +168,10 @@ do
     save_index
 
     cd ..
+    process_del
+    process_rep
+    delete_expired
 done
-process_del
-process_rep
-delete_expired
+
 
 

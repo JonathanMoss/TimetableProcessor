@@ -16,8 +16,8 @@ async def process_del():
     async with async_session() as session:
         async with session.begin():
             dal = TSDBDal(session)
-            await dal.process_del()
-    return {'result': 'ok'}
+            result = await dal.process_del()
+    return {'result': result}
 
 @TSDB_ROUTES.put('/api/v1/tsdb/process_rep/', status_code=200, tags=["Update"])
 async def process_rep():
@@ -26,8 +26,8 @@ async def process_rep():
     async with async_session() as session:
         async with session.begin():
             dal = TSDBDal(session)
-            await dal.process_rep()
-    return {'result': 'ok'}
+            result = await dal.process_rep()
+    return {'result': result}
 
 @TSDB_ROUTES.delete('/api/v1/tsdb/truncate_bs/', status_code=200, tags=["DELETE"])
 async def truncate_bs():
@@ -46,8 +46,8 @@ async def delete_expired():
     async with async_session() as session:
         async with session.begin():
             dal = TSDBDal(session)
-            await dal.delete_expired()
-    return {'result': 'ok'}
+            result = await dal.delete_expired()
+    return {'result': result}
 
 @TSDB_ROUTES.get('/api/v1/tsdb/next_index/', status_code=200, tags=["Read"])
 async def get_bs_index():
