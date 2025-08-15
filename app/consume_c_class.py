@@ -17,12 +17,17 @@ from broker.inbound_rmq_connection import InboundMqConnection
 
 
 @pydantic.validate_call
-def process_inbound(message: list) -> None:
+def process_inbound(message: object) -> None:
     """Process the inbound message"""
+    
+    # if message['td'] == 'Q7':
+    #     print(message)
 
-    for msg in message:
-        with open(f"vstp/{msg['VSTPCIFMsgV1']['originMsgId']}", "a", encoding='UTF-8') as file:
-            file.write(json.dumps(msg))
+    if message['td'] == 'Q7':
+        if message['from_berth'] in ['A041', 'B041', 'C041', 'R041']:
+            print(message)
+        if message['to_berth'] in ['A041', 'B041', 'C041', 'R041']:
+            print(message)
 
 def callback(
         channel: pika.adapters.blocking_connection.BlockingChannel,
@@ -35,4 +40,4 @@ def callback(
 
 if __name__ == '__main__':
 
-    SUB = InboundMqConnection(callback=callback, exchange='nrod-vstp')
+    SUB = InboundMqConnection(callback=callback, exchange='nrod-c-class')

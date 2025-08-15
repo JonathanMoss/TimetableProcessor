@@ -1,0 +1,796 @@
+{
+    "VSTPCIFMsgV1": {
+        "schedule": {
+            "schedule_segment": [
+                {
+                    "schedule_location": [
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "EDINBUR"
+                                }
+                            },
+                            "scheduled_pass_time": " ",
+                            "scheduled_departure_time": "195800",
+                            "scheduled_arrival_time": " ",
+                            "public_departure_time": "195800",
+                            "public_arrival_time": " ",
+                            "CIF_path": " ",
+                            "CIF_activity": "TB"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "ABHLJN"
+                                }
+                            },
+                            "scheduled_pass_time": "195930",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "CRGNTYJ"
+                                }
+                            },
+                            "scheduled_pass_time": "200100",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "PORTOBL"
+                                }
+                            },
+                            "scheduled_pass_time": "200200",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "MNKTNHJ"
+                                }
+                            },
+                            "scheduled_pass_time": "200330",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "PPAN"
+                                }
+                            },
+                            "scheduled_pass_time": "200530",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_performance_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "DREMJ"
+                                }
+                            },
+                            "scheduled_pass_time": "201100",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "DUNBAR"
+                                }
+                            },
+                            "scheduled_pass_time": "201730",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "OXWLCO"
+                                }
+                            },
+                            "scheduled_pass_time": "201900",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "GTHS"
+                                }
+                            },
+                            "scheduled_pass_time": "202530",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "RESTSTN"
+                                }
+                            },
+                            "scheduled_pass_time": "202930",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_engineering_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "REST402"
+                                }
+                            },
+                            "scheduled_pass_time": "203530",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "BRWCKUT"
+                                }
+                            },
+                            "scheduled_pass_time": "203730",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "BELFORD"
+                                }
+                            },
+                            "scheduled_pass_time": "204600",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "ALNMOTH"
+                                }
+                            },
+                            "scheduled_pass_time": "205500",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "4H"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "MRPTHRP"
+                                }
+                            },
+                            "scheduled_pass_time": "      ",
+                            "scheduled_departure_time": "211330",
+                            "scheduled_arrival_time": "211100",
+                            "public_departure_time": "211300",
+                            "public_arrival_time": "211100",
+                            "CIF_pathing_allowance": "2H"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "BENTON"
+                                }
+                            },
+                            "scheduled_pass_time": "212400",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_engineering_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "HTONSJN"
+                                }
+                            },
+                            "scheduled_pass_time": "212630",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "NWCSTLE"
+                                }
+                            },
+                            "scheduled_pass_time": "      ",
+                            "scheduled_departure_time": "213500",
+                            "scheduled_arrival_time": "212930",
+                            "public_departure_time": "213500",
+                            "public_arrival_time": "213000"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "KEBGSJN"
+                                }
+                            },
+                            "scheduled_pass_time": "213700",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "BRTLYJN"
+                                }
+                            },
+                            "scheduled_pass_time": "214030",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "DRHM"
+                                }
+                            },
+                            "scheduled_pass_time": "214530",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "TURSDLJ"
+                                }
+                            },
+                            "scheduled_pass_time": "215030",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "FYHLSJN"
+                                }
+                            },
+                            "scheduled_pass_time": "215300",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_performance_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "DLTN"
+                                }
+                            },
+                            "scheduled_pass_time": "220100",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "NLRTN"
+                                }
+                            },
+                            "scheduled_pass_time": "220930",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "THIRSK"
+                                }
+                            },
+                            "scheduled_pass_time": "221300",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "TOLERTN"
+                                }
+                            },
+                            "scheduled_pass_time": "221900",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_engineering_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "SKELTON"
+                                }
+                            },
+                            "scheduled_pass_time": "222400",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "2"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "YORK"
+                                }
+                            },
+                            "scheduled_pass_time": "222800",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": " H"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "COLTONJ"
+                                }
+                            },
+                            "scheduled_pass_time": "223230",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "HAMBLNJ"
+                                }
+                            },
+                            "scheduled_pass_time": "223630",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "TEMPLHJ"
+                                }
+                            },
+                            "scheduled_pass_time": "223930",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_engineering_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "SHFTHLJ"
+                                }
+                            },
+                            "scheduled_pass_time": "224500",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "DONC"
+                                }
+                            },
+                            "scheduled_pass_time": "224800",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "DONCLCJ"
+                                }
+                            },
+                            "scheduled_pass_time": "225000",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "RTFD"
+                                }
+                            },
+                            "scheduled_pass_time": "225630",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "CRLTOTL"
+                                }
+                            },
+                            "scheduled_pass_time": "230300",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_engineering_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "NWRKFC"
+                                }
+                            },
+                            "scheduled_pass_time": "230630",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "NEWANG"
+                                }
+                            },
+                            "scheduled_pass_time": "230700",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "CLPLLP"
+                                }
+                            },
+                            "scheduled_pass_time": "230930",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "GTHM"
+                                }
+                            },
+                            "scheduled_pass_time": "231430",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "SOKEJN"
+                                }
+                            },
+                            "scheduled_pass_time": "231730",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "2H"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "TALNGTN"
+                                }
+                            },
+                            "scheduled_pass_time": "233130",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_engineering_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "PBRO"
+                                }
+                            },
+                            "scheduled_pass_time": "233930",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "FLETTON"
+                                }
+                            },
+                            "scheduled_pass_time": "234000",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "CNNGSJN"
+                                }
+                            },
+                            "scheduled_pass_time": "234430",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "HNTNGDN"
+                                }
+                            },
+                            "scheduled_pass_time": "235000",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "2"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "SNDY"
+                                }
+                            },
+                            "scheduled_pass_time": "000400",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "BIGLSWD"
+                                }
+                            },
+                            "scheduled_pass_time": "000630",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_engineering_allowance": "5"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "HITCHIN"
+                                }
+                            },
+                            "scheduled_pass_time": "001830",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "1H"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "STEVNGE"
+                                }
+                            },
+                            "scheduled_pass_time": "      ",
+                            "scheduled_departure_time": "002600",
+                            "scheduled_arrival_time": "002400",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "002400"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "WLMRGRN"
+                                }
+                            },
+                            "scheduled_pass_time": "002800",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "DIGSWEL"
+                                }
+                            },
+                            "scheduled_pass_time": "003100",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "WLWYNGC"
+                                }
+                            },
+                            "scheduled_pass_time": "003200",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "POTRSBR"
+                                }
+                            },
+                            "scheduled_pass_time": "004100",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "1H"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "ALEXNDP"
+                                }
+                            },
+                            "scheduled_pass_time": "004800",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "3"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "FNPK"
+                                }
+                            },
+                            "scheduled_pass_time": "005100",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "HLWYSJ"
+                                }
+                            },
+                            "scheduled_pass_time": "005200",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_pathing_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "KNGXBEL"
+                                }
+                            },
+                            "scheduled_pass_time": "005430",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      "
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "KNGX"
+                                }
+                            },
+                            "scheduled_pass_time": " ",
+                            "scheduled_departure_time": " ",
+                            "scheduled_arrival_time": "005600",
+                            "public_departure_time": " ",
+                            "public_arrival_time": "      ",
+                            "CIF_performance_allowance": " ",
+                            "CIF_pathing_allowance": " ",
+                            "CIF_line": " ",
+                            "CIF_engineering_allowance": " ",
+                            "CIF_activity": "TF"
+                        }
+                    ],
+                    "signalling_id": "1E88",
+                    "CIF_train_service_code": "21499320",
+                    "CIF_train_category": "XX",
+                    "CIF_power_type": "EMU"
+                }
+            ],
+            "transaction_type": "Create",
+            "train_status": "1",
+            "schedule_start_date": "2024-02-16",
+            "schedule_end_date": "2024-02-16",
+            "schedule_days_runs": "0000100",
+            "applicable_timetable": "Y",
+            "CIF_train_uid": "C11444",
+            "CIF_stp_indicator": "O"
+        },
+        "Sender": {
+            "organisation": "Network Rail",
+            "application": "TSIA",
+            "component": "TSIA",
+            "userID": "#QGP0923",
+            "sessionID": "D475900"
+        },
+        "classification": "industry",
+        "timestamp": "1708093660000",
+        "owner": "Network Rail",
+        "originMsgId": "2024-02-16T14:27:40-00:00@vstp.networkrail.co.uk"
+    }
+}

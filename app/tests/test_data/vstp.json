@@ -1,0 +1,139 @@
+{
+    "VSTPCIFMsgV1": {
+        "schedule": {
+            "schedule_segment": [
+                {
+                    "schedule_location": [
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "DIDCOTP"
+                                }
+                            },
+                            "scheduled_pass_time": " ",
+                            "scheduled_departure_time": "183000",
+                            "scheduled_arrival_time": " ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": " ",
+                            "CIF_platform": "3",
+                            "CIF_path": " ",
+                            "CIF_line": "RL",
+                            "CIF_activity": "TB"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "DIDCTEJ"
+                                }
+                            },
+                            "scheduled_pass_time": "183100",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_line": "ML"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "MRTNCUT"
+                                }
+                            },
+                            "scheduled_pass_time": "183200",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_line": "RL"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "GORASTR"
+                                }
+                            },
+                            "scheduled_pass_time": "183630",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_line": "RL",
+                            "CIF_engineering_allowance": "1"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "REDGWJN"
+                                }
+                            },
+                            "scheduled_pass_time": "184200",
+                            "scheduled_departure_time": "      ",
+                            "scheduled_arrival_time": "      ",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_line": "RL"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "RDNGSTN"
+                                }
+                            },
+                            "scheduled_pass_time": "      ",
+                            "scheduled_departure_time": "185100",
+                            "scheduled_arrival_time": "184400",
+                            "public_departure_time": "      ",
+                            "public_arrival_time": "      ",
+                            "CIF_platform": "15"
+                        },
+                        {
+                            "location": {
+                                "tiploc": {
+                                    "tiploc_id": "RDNGTCD"
+                                }
+                            },
+                            "scheduled_pass_time": " ",
+                            "scheduled_departure_time": " ",
+                            "scheduled_arrival_time": "185400",
+                            "public_departure_time": " ",
+                            "public_arrival_time": "      ",
+                            "CIF_performance_allowance": " ",
+                            "CIF_pathing_allowance": " ",
+                            "CIF_line": " ",
+                            "CIF_engineering_allowance": " ",
+                            "CIF_activity": "TF"
+                        }
+                    ],
+                    "signalling_id": "3R23",
+                    "atoc_code": "GW",
+                    "CIF_train_service_code": "25507005",
+                    "CIF_train_class": "5",
+                    "CIF_train_category": "EE",
+                    "CIF_timing_load": "387",
+                    "CIF_speed": "246",
+                    "CIF_power_type": "EMU",
+                    "CIF_course_indicator": "1"
+                }
+            ],
+            "transaction_type": "Create",
+            "train_status": " ",
+            "schedule_start_date": "2024-01-26",
+            "schedule_end_date": "2024-01-26",
+            "schedule_days_runs": "0000100",
+            "applicable_timetable": "N",
+            "CIF_train_uid": " 42520",
+            "CIF_stp_indicator": "N"
+        },
+        "Sender": {
+            "organisation": "Network Rail",
+            "application": "TSIA",
+            "component": "INTEGRALE-VSTP",
+            "userID": "#QDP5227",
+            "sessionID": "Q807000"
+        },
+        "classification": "industry",
+        "timestamp": "1706275815000",
+        "owner": "Network Rail",
+        "originMsgId": "2024-01-26T13:30:15-00:00@vstp.networkrail.co.uk"
+    }
+}
