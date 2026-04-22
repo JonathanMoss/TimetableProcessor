@@ -19,10 +19,10 @@ from broker.inbound_rmq_connection import InboundMqConnection
 @pydantic.validate_call
 def process_inbound(message: object) -> None:
     """Process the inbound message"""
-    
-    # if message['td'] == 'Q7':
-    #     print(message)
 
+    if message['td'] == 'Q7':
+        print(message)
+    return
     if message['td'] == 'Q7':
         if message['from_berth'] in ['A041', 'B041', 'C041', 'R041']:
             print(message)

@@ -100,6 +100,7 @@ if gzip -t $FILE.gz; then
   FULL_CIF_ARCHIVE_SIZE=$(stat --printf="%s" $FILE.gz)
   echo "Archive size: $FULL_CIF_ARCHIVE_SIZE"
   gzip -d $FILE.gz
+  #tar -zxf $FILE.gz
   FULL_CIF_SIZE=$(stat --printf="%s" $FILE)
   echo "Uncompressed size: $FULL_CIF_SIZE"
 else

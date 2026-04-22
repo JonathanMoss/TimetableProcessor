@@ -10,6 +10,9 @@ services:
       ARCHIVE_CIF: /root/ARCHIVE_CIF
       NROD_USER: ${NROD_USER}
       NROD_PASS: ${NROD_PASS}
+    dns:
+      - "8.8.8.8"
+      - "1.1.1.1"
     volumes:
       - "/home/tms_user/CIF:/root/CIF/"
       - "/home/tms_user/ARCHIVE_CIF:/root/ARCHIVE_CIF/"
