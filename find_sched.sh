@@ -4,14 +4,69 @@ set -u
 
 CIF="/home/$USER/CIF/AMALGAMATED.CIF";
 
-while getopts u:h:t: flag
+while getopts u:h:t:d: flag
 do
     case "${flag}" in
         u) uid=${OPTARG};;
         h) headcode=${OPTARG};;
         t) tiploc=${OPTARG};;
+        d) valid_date=${OPTARG};;
+
     esac
 done
+
+function select_valid() {
+    
+    today=$(date +%y%m%d)
+    dow=$(date +%u)
+
+    printf '%s\n' "$1" | awk -v today="$today" -v dow="$dow" '
+
+        function is_valid(bs_line) {
+            start = substr(bs_line, 10, 6)
+            end   = substr(bs_line, 16, 6)
+            days  = substr(bs_line, 22, 7)
+
+            return (start <= today && today <= end && substr(days, dow, 1) == "1")
+        }
+
+        # When we hit a new BS, decide whether to print the previous block
+        substr($0,1,2)=="BS" {
+
+            # If we already have a block buffered, print it if valid
+            if (block && valid) {
+                print block
+            }
+
+            # Start new block
+            block = $0
+            valid = is_valid($0)
+
+            next
+        }
+
+        # Accumulate lines into current block
+        {
+            block = block "\n" $0
+        }
+
+        END {
+            # Print last block
+            if (block && valid) {
+                print block
+            }
+        }
+    '
+}
+
+function output() {
+    if [ -v valid_date ];
+    then
+       select_valid "$1"
+    else
+        printf '%s\n' "$1"
+    fi
+}
 
 if [ -v uid ] && [ -v headcode ];
 then
@@ -41,15 +96,16 @@ fi
 
 if [ -v withtiploc ];
 then
-    printf '%s\n' "$withtiploc"
+    output "$withtiploc"
     exit 0
 fi
 
 if [ -v train ];
 then
-    printf '%s\n' "$train"
+    output "$train"
     exit 0
 fi
 
 echo "ERROR: Check parameters"
+exit 1
 
