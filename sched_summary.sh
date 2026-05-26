@@ -85,6 +85,17 @@ function days_run(bits, result) {
     return result
 }
 
+function stp_description(code) {
+    code = trim(code)
+
+    if (code == "P") return "Permanent"
+    if (code == "O") return "Overlay"
+    if (code == "N") return "New"
+    if (code == "C") return "Cancellation"
+
+    return code == "" ? "Not found" : "Unknown (" code ")"
+}
+
 function add_location(tiploc, arr, dep, platform, line, path) {
     locations[++loc_count] = sprintf("%s|%s|%s|%s|%s|%s", \
         tiploc, arr, dep, platform, line, path)
@@ -99,6 +110,7 @@ function reset_schedule() {
     uid = ""
     headcode = ""
     toc = ""
+    stp = ""
     from_date = ""
     to_date = ""
     days = ""
@@ -128,6 +140,7 @@ function print_schedule(i, f) {
 
     printf "UID:               %s\n", uid == "" ? "Not found" : uid
     printf "Headcode:          %s\n", headcode == "" ? "Not found" : headcode
+    printf "Schedule type:     %s (%s)\n", stp_description(stp), stp == "" ? "-" : stp
     printf "TOC code:          %s\n", toc == "" ? "Not found" : toc
     printf "Applicable dates:  %s to %s\n", from_date, to_date
     printf "Days run:          %s\n", days
@@ -180,12 +193,14 @@ BEGIN {
         # 16-21   Date Runs To
         # 22-28   Days Run
         # 33-36   Train Identity / Headcode
+        # 80      STP Indicator
 
         uid       = trim(substr($0, 4, 6))
         from_date = cif_date(substr($0, 10, 6))
         to_date   = cif_date(substr($0, 16, 6))
         days      = days_run(substr($0, 22, 7))
         headcode  = trim(substr($0, 33, 4))
+        stp       = trim(substr($0, 80, 1))
     }
 
     else if (rec == "BX") {
