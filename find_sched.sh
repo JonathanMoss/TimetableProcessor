@@ -4,19 +4,19 @@ set -u
 
 CIF="/home/$USER/CIF/AMALGAMATED.CIF";
 
-while getopts u:h:t:d: flag
+while getopts u:h:t:d flag
 do
     case "${flag}" in
         u) uid=${OPTARG};;
         h) headcode=${OPTARG};;
         t) tiploc=${OPTARG};;
-        d) valid_date=${OPTARG};;
+        d) valid_date=true;;
 
     esac
 done
 
 function select_valid() {
-    
+
     today=$(date +%y%m%d)
     dow=$(date +%u)
 
