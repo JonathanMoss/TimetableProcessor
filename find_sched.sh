@@ -3,10 +3,6 @@
 set -u
 
 CIF="/home/$USER/CIF/AMALGAMATED.CIF";
-ROOT_REGEX="^BS[NDR]\X+?(?=^BS|^ZZ)"
-
-HOPE="(?ms)^BS[NDR](?:(?!^BS|^ZZ)[\s\S])*?CREWE(?:(?!^BS|^ZZ)[\s\S])*?(?=^BS|^ZZ|\Z)"
-
 
 while getopts u:h:t: flag
 do
