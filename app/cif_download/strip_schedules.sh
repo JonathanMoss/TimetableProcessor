@@ -7,3 +7,4 @@ rm -f AMALGAMATED.CIF
 touch AMALGAMATED.CIF
 
 pcregrep -Mh "^BS\X*?(?=^BS|^ZZ)" *.CIF >> AMALGAMATED.CIF
+echo "ZZ" >> AMALGAMATED.CIF

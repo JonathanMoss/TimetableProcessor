@@ -2,18 +2,43 @@
 
 set -u
 
-CIF="/home/$USER/CIF/AMALGAMATED.CIF";
-
-while getopts u:h:t:d flag
+while getopts u:h:t:f:d flag
 do
     case "${flag}" in
         u) uid=${OPTARG};;
         h) headcode=${OPTARG};;
         t) tiploc=${OPTARG};;
         d) valid_date=true;;
+        f) filename=${OPTARG};;
 
     esac
 done
+
+if [ -v filename ];
+then
+    CIF=$filename
+else
+    CIF="/home/$USER/CIF/AMALGAMATED.CIF";
+fi
+
+# Make sure ZZ is the file terminator (otherwise we may miss last BS record)
+
+# Get last line
+last_line=$(tail -n 1 "$CIF")
+
+# Check if it ends with ZZ
+if [[ "$last_line" != *ZZ ]]; then
+    echo "WARNING: 'ZZ' record terminator not found..."
+
+    # Check if file is writable
+    if [ -w "$CIF" ]; then
+        echo "Appending $CIF with ZZ"
+        echo "ZZ" >> "$CIF"
+    else
+        echo "WARNING: cannot append 'ZZ'"
+    fi
+fi
+
 
 function select_valid() {
 
